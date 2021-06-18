@@ -2,12 +2,9 @@ package com.honeybae.project.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
-
 import com.honeybae.project.dto.Product;
-@Mapper
-@Repository
+//@Mapper
+//@Repository
 public interface ProductMapper {
 	
 	public List<Product> selectList(Product dto)throws Exception;

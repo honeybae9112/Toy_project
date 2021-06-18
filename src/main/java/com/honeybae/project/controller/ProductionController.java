@@ -8,7 +8,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +52,7 @@ public class ProductionController {
 	@PostMapping(value="/product")
 	public Map<String,Object> create(@RequestBody Product dto)throws Exception{
 		logger.debug("productCreate");
-		productService.productAdd(dto);
+//		productService.productAdd(dto);
 		Map<String,Object> respData = new HashMap<String,Object>();
 		respData.put("status", "success");
 		return respData;
@@ -61,7 +60,7 @@ public class ProductionController {
 	@PutMapping(value="/product")
 	public Map<String,String> update(@RequestBody Product dto)throws Exception{
 		logger.debug("productUpdate");
-		productService.productUpdate(dto);
+//		productService.productUpdate(dto);
 		Map<String,String> respData = new HashMap<String,String>();
 		respData.put("status", "success");
 		return respData;
@@ -69,7 +68,7 @@ public class ProductionController {
 	@DeleteMapping(value="/product")
 	public Map<String,String> delete(@RequestBody Product dto)throws Exception{
 		logger.debug("productDelete");
-		productService.productDelete(dto);
+//		productService.productDelete(dto);
 		Map<String,String> respData = new HashMap<String,String>();
 		respData.put("status", "success");
 		return respData;
