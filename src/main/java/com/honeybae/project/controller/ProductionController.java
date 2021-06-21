@@ -30,7 +30,7 @@ public class ProductionController {
 	@GetMapping(value="/product")
 	public Map<String,Object> list(Product dto)throws Exception {
 		logger.debug("productList");
-		List<Product> list = productService.selectAll(dto);
+		List<Product> list = productService.selectList(dto);
 		Map<String,Object> respData = new LinkedHashMap<>();
 		respData.put("status", "success");
 		respData.put("totalCount", list.size());
@@ -40,7 +40,7 @@ public class ProductionController {
 	@GetMapping(value="/product/{productNo}")
 	public Map<String,Object> get(@PathVariable("productNo")String productId)throws Exception{
 		logger.debug("productGet");
-		Product data = productService.selctOne(productId);
+		Product data = productService.selectOne(productId);
 		Map<String,Object> respData = new LinkedHashMap<>();
 		respData.put("status", "success");
 		respData.put("data", data);
