@@ -2,9 +2,9 @@ package com.honeybae.project.dto;
 
 public class Product {
 	
-	private String productNo;
+	private String productId;
 	private String brand;
-	private String collaborationYn;
+	private boolean collaborationYn;
 	private String collaborationBrand;
 	private String type;
 	private String model;
@@ -19,31 +19,25 @@ public class Product {
 	private float realSizeLength;
 	private float realSizeWidth;
 	private float weight;
-	private String usedYn;
+	private boolean usedYn;
 	private String releaseDate;
-	private String retroYn;
+	private boolean retroYn;
 	private String writer;
 	private String writeTime;
 	private String updateTime;
-	private String soldoutYn;
-	private String deleteYn;
+	private boolean soldoutYn;
+	private boolean deleteYn;
 	private int readCount;
 	
-	
 	public Product() {
-		super();
 	}
-	
-
-
-
-	public Product(String productNo, String brand, String collaborationYn, String collaborationBrand, String type,
+	public Product(String productId, String brand, boolean collaborationYn, String collaborationBrand, String type,
 			String model, String name, String color, int price, int size, int quantity, String description,
 			String inMaterial, String outMaterial, float realSizeLength, float realSizeWidth, float weight,
-			String usedYn, String releaseDate, String retroYn, String writer, String writeTime, String updateTime,
-			String soldoutYn, String deleteYn, int readCount) {
+			boolean usedYn, String releaseDate, boolean retroYn, String writer, String writeTime, String updateTime,
+			boolean soldoutYn, boolean deleteYn, int readCount) {
 		super();
-		this.productNo = productNo;
+		this.productId = productId;
 		this.brand = brand;
 		this.collaborationYn = collaborationYn;
 		this.collaborationBrand = collaborationBrand;
@@ -71,26 +65,11 @@ public class Product {
 		this.readCount = readCount;
 	}
 
-
-
-
-	public int getReadCount() {
-		return readCount;
+	public String getProductId() {
+		return productId;
 	}
-
-	public void setReadCount(int readCount) {
-		this.readCount = readCount;
-	}
-
-	public String getSoldoutYn() {
-		return soldoutYn;
-	}
-
-	public String getProductNo() {
-		return productNo;
-	}
-	public void setProductNo(String productNo) {
-		this.productNo = productNo;
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 	public String getBrand() {
 		return brand;
@@ -98,10 +77,10 @@ public class Product {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	public String getCollaborationYn() {
+	public boolean isCollaborationYn() {
 		return collaborationYn;
 	}
-	public void setCollaborationYn(String collaborationYn) {
+	public void setCollaborationYn(boolean collaborationYn) {
 		this.collaborationYn = collaborationYn;
 	}
 	public String getCollaborationBrand() {
@@ -115,6 +94,12 @@ public class Product {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
 	}
 	public String getName() {
 		return name;
@@ -155,14 +140,14 @@ public class Product {
 	public String getInMaterial() {
 		return inMaterial;
 	}
-	public void setInMaterial(String in_material) {
-		this.inMaterial = in_material;
+	public void setInMaterial(String inMaterial) {
+		this.inMaterial = inMaterial;
 	}
 	public String getOutMaterial() {
 		return outMaterial;
 	}
-	public void setOutMaterial(String out_material) {
-		this.outMaterial = out_material;
+	public void setOutMaterial(String outMaterial) {
+		this.outMaterial = outMaterial;
 	}
 	public float getRealSizeLength() {
 		return realSizeLength;
@@ -182,10 +167,10 @@ public class Product {
 	public void setWeight(float weight) {
 		this.weight = weight;
 	}
-	public String getUsedYn() {
+	public boolean isUsedYn() {
 		return usedYn;
 	}
-	public void setUsedYn(String usedYn) {
+	public void setUsedYn(boolean usedYn) {
 		this.usedYn = usedYn;
 	}
 	public String getReleaseDate() {
@@ -194,10 +179,10 @@ public class Product {
 	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	public String getRetroYn() {
+	public boolean isRetroYn() {
 		return retroYn;
 	}
-	public void setRetroYn(String retroYn) {
+	public void setRetroYn(boolean retroYn) {
 		this.retroYn = retroYn;
 	}
 	public String getWriter() {
@@ -218,30 +203,27 @@ public class Product {
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
-	public String getSoleoutYn() {
+	public boolean isSoldoutYn() {
 		return soldoutYn;
 	}
-	public void setSoldoutYn(String soleoutYn) {
-		this.soldoutYn = soleoutYn;
+	public void setSoldoutYn(boolean soldoutYn) {
+		this.soldoutYn = soldoutYn;
 	}
-	public String getDeleteYn() {
+	public boolean isDeleteYn() {
 		return deleteYn;
 	}
-	public void setDeleteYn(String deleteYn) {
+	public void setDeleteYn(boolean deleteYn) {
 		this.deleteYn = deleteYn;
 	}
-
-	public String getModel() {
-		return model;
+	public int getReadCount() {
+		return readCount;
 	}
-
-	public void setModel(String model) {
-		this.model = model;
+	public void setReadCount(int readCount) {
+		this.readCount = readCount;
 	}
-
 	@Override
 	public String toString() {
-		return "Product [productNo=" + productNo + ", brand=" + brand + ", collaborationYn=" + collaborationYn
+		return "Product [productId=" + productId + ", brand=" + brand + ", collaborationYn=" + collaborationYn
 				+ ", collaborationBrand=" + collaborationBrand + ", type=" + type + ", model=" + model + ", name="
 				+ name + ", color=" + color + ", price=" + price + ", size=" + size + ", quantity=" + quantity
 				+ ", description=" + description + ", inMaterial=" + inMaterial + ", outMaterial=" + outMaterial
@@ -251,4 +233,6 @@ public class Product {
 				+ deleteYn + ", readCount=" + readCount + "]";
 	}
 
+	
+	
 }
