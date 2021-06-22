@@ -1,6 +1,7 @@
 package com.honeybae.project.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +26,48 @@ public class ProductRepository {
 	public List<Product> selectList(Map searchData)throws Exception{
 		List<Product> respList = new ArrayList<>();
 		for(Map<String,Object> dbData : DB) {
+			String dbBrand = (String)dbData.get("brand");
+			String dbType = (String)dbData.get("type");
+			int dbSize = (int)dbData.get("size");
+			String dbColor = (String)dbData.get("color");
+			boolean dbCollaborationYn = (boolean)dbData.get("collaborationYn");
+			
+			String searchBrand = (String)searchData.get("brand");
 			Product product = null;
 			ObjectMapper mapper = new ObjectMapper();
-			String dbBrand = (String)dbData.get("brand");
-			String searchBrand = (String)searchData.get("brand");
 			if(dbBrand.equals(searchBrand)) {
 				product = mapper.convertValue(dbData, Product.class);
 				respList.add(product);
 			}
+		}
+		return respList;
+	}
+	public List<Product> selectList(Product searchData)throws Exception{
+		List<Product> respList = new ArrayList<>();
+		for(Map<String,Object> dbData : DB) {
+			// 컬럼
+			String dbBrand = (String)dbData.get("brand");
+			String dbType = (String)dbData.get("type");
+			int dbSize = (int)dbData.get("size");
+			String dbColor = (String)dbData.get("color");
+			boolean dbCollaborationYn = (boolean)dbData.get("collaborationYn");
+			
+			Product product = null;
+			ObjectMapper mapper = new ObjectMapper();
+			//브랜드 & 타입 & 사이즈 & 색상 & 콜라보
+			//브랜드 & 타입 & 사이즈 & 색상 
+			//브랜드 & 타입 & 사이즈 
+			//브랜드 & 타입 
+			//브랜드
+			//타입 
+			//사이즈
+			//색상
+			//콜라보
+			if(dbBrand.equals(searchData.getBrand())) {
+				product = mapper.convertValue(dbData, Product.class);
+				respList.add(product);
+			}
+			
 		}
 		return respList;
 	}
