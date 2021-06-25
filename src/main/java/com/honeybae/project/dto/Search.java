@@ -3,7 +3,7 @@ package com.honeybae.project.dto;
 public class Search {
 	 private String brand;
 	 private String type;
-	 private String size;
+	 private int size;
 	 private String color;
 	 private boolean collaborationYn;
 	 private int minPrice;
@@ -11,7 +11,10 @@ public class Search {
 	 private String name;
 	 
 	 
-	public Search(String brand, String type, String size, String color, boolean collaborationYn, int minPrice,
+	public Search() {
+	}
+
+	public Search(String brand, String type, int size, String color, boolean collaborationYn, int minPrice,
 			int maxPrice, String name) {
 		super();
 		this.brand = brand;
@@ -45,12 +48,12 @@ public class Search {
 	}
 
 
-	public String getSize() {
+	public int getSize() {
 		return size;
 	}
 
 
-	public void setSize(String size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 

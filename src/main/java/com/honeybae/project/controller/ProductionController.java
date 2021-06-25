@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.honeybae.project.dto.Product;
+import com.honeybae.project.dto.Search;
 import com.honeybae.project.service.ProductService;
 @RestController
 public class ProductionController {
@@ -28,8 +29,9 @@ public class ProductionController {
 	
 	// 표출갯수 지정
 	@GetMapping(value="/product")
-	public Map<String,Object> list(Product dto)throws Exception {
+	public Map<String,Object> list(Search dto)throws Exception {
 		logger.debug("productList");
+		System.out.println(dto.toString());
 		List<Product> list = productService.selectList(dto);
 		Map<String,Object> respData = new LinkedHashMap<>();
 		respData.put("status", "success");
