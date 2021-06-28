@@ -5,7 +5,7 @@ public class Search {
 	 private String type;
 	 private int size;
 	 private String color;
-	 private boolean collaborationYn;
+	 private boolean collaboration;
 	 private int minPrice;
 	 private int maxPrice;
 	 private String name;
@@ -14,14 +14,14 @@ public class Search {
 	public Search() {
 	}
 
-	public Search(String brand, String type, int size, String color, boolean collaborationYn, int minPrice,
+	public Search(String brand, String type, int size, String color, boolean collaboration, int minPrice,
 			int maxPrice, String name) {
 		super();
 		this.brand = brand;
 		this.type = type;
 		this.size = size;
 		this.color = color;
-		this.collaborationYn = collaborationYn;
+		this.collaboration = collaboration;
 		this.minPrice = minPrice;
 		this.maxPrice = maxPrice;
 		this.name = name;
@@ -68,13 +68,13 @@ public class Search {
 	}
 
 
-	public boolean isCollaborationYn() {
-		return collaborationYn;
+	public boolean isCollaboration() {
+		return collaboration;
 	}
 
 
-	public void setCollaborationYn(boolean collaborationYn) {
-		this.collaborationYn = collaborationYn;
+	public void setCollaborationYn(boolean collaboration) {
+		this.collaboration = collaboration;
 	}
 
 
