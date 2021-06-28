@@ -37,7 +37,7 @@ public class ProductService  {
 				&& searchDto.getType()==null
 				&& searchDto.getSize()==0
 				&& searchDto.getColor()==null
-				&& searchDto.isCollaborationYn()==false) {
+				&& searchDto.isCollaboration()==false) {
 			return productRepository.selectList();
 		}else {
 			List<Product> dbList = productRepository.selectList();
@@ -55,8 +55,8 @@ public class ProductService  {
 				}else if(searchDto.getColor()!= null
 						&&	data.getColor().equals(searchDto.getColor())){
 					respList.add(data);
-				}else if(searchDto.isCollaborationYn()!= false
-						&&	data.isCollaborationYn()==searchDto.isCollaborationYn()){
+				}else if(searchDto.isCollaboration()!= false
+						&&	data.isCollaboration()==searchDto.isCollaboration()){
 					respList.add(data);
 				}
 			}
@@ -139,7 +139,7 @@ public class ProductService  {
 	public Product selectOne(String productId) throws Exception {
 		// 조회수 증가
 		productRepository.readCount(productId);
-		return productRepository.selectGet(productId);
+		return productRepository.selectOne(productId);
 	}
 
 	public void addProduct(Product dto) throws Exception {
@@ -160,12 +160,9 @@ public class ProductService  {
 		productRepository.deleteProduct(productId);
 	}
 
-	public void updateProduct(Product dto) throws Exception {
-		// 수정가능항목
-		// 삭제후 재등록? 업데이트?
-		// 업데이트는 전체항목? or 브랜드,타입,모델 
+	public void updateProduct(String productId,Product dto) throws Exception {
 		dto.setUpdateTime(TimeUtil.get(new Date()));
-		productRepository.updateProduct(dto);
+		productRepository.updateProduct(productId,dto);
 	}
 	
 	

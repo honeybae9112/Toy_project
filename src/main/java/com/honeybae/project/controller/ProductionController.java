@@ -39,8 +39,8 @@ public class ProductionController {
 		respData.put("list", list);
 		return respData;
 	}
-	@GetMapping(value="/product/{productNo}")
-	public Map<String,Object> get(@PathVariable("productNo")String productId)throws Exception{
+	@GetMapping(value="/product/{productId}")
+	public Map<String,Object> get(@PathVariable("productId")String productId)throws Exception{
 		logger.debug("productGet");
 		Product data = productService.selectOne(productId);
 		Map<String,Object> respData = new LinkedHashMap<>();
@@ -60,19 +60,19 @@ public class ProductionController {
 		respData.put("status", "success");
 		return respData;
 	}
-	@PutMapping(value="/product")
-	public Map<String,String> update(@RequestBody Product dto)throws Exception{
+	@PutMapping(value="/product/{productId}")
+	public Map<String,String> update(@PathVariable("productId")String productId,
+									@RequestBody Product dto)throws Exception{
 		logger.debug("productUpdate");
-		productService.updateProduct(dto);
+		productService.updateProduct(productId,dto);
 		Map<String,String> respData = new HashMap<String,String>();
 		respData.put("status", "success");
 		return respData;
 	}
-	@DeleteMapping(value="/product")
-	public Map<String,String> delete(@RequestBody Product dto)throws Exception{
+	@DeleteMapping(value="/product/{productId}")
+	public Map<String,String> delete(@PathVariable("productId")String productId)throws Exception{
 		logger.debug("productDelete");
-		System.out.println(dto.getProductId());
-		productService.deleteProduct(dto.getProductId());
+		productService.deleteProduct(productId);
 		Map<String,String> respData = new HashMap<String,String>();
 		respData.put("status", "success");
 		return respData;
