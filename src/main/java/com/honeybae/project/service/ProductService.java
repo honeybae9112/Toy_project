@@ -20,120 +20,35 @@ public class ProductService  {
 	ProductRepository productRepository;
 
 	public List<Product> selectList(Search searchDto) throws Exception {
-		// 검색 조건
-		// 대분류
-		// 	- 브랜드,타입,사이즈,색상,콜라보 별 조회
-		//	- 금액 min~max 사이 조회
-		// 정렬
-		// 	- 가격순
-		//	- 조회수순
-		// 지정명 검색
+		// 조건1
+		// price 20000~50000 의 리스트 리턴 
+		int minPrice = searchDto.getMinPrice();
+		int maxPrice = searchDto.getMaxPrice();
 		
-		// 다수의 조건 경우 ??
-		// map?? dto ??
-		// 전체 목록을 조회해서 로직에서 처리?
-		
-		if(searchDto.getBrand()==null
-				&& searchDto.getType()==null
-				&& searchDto.getSize()==0
-				&& searchDto.getColor()==null
-				&& searchDto.isCollaboration()==false) {
+		if(minPrice ==0 && maxPrice==0) {
 			return productRepository.selectList();
 		}else {
-			List<Product> dbList = productRepository.selectList();
-			List<Product> respList = new ArrayList();
-			for(Product data : dbList) {
-				if(searchDto.getBrand()!= null
-						&& data.getBrand().equals(searchDto.getBrand())) {
-					respList.add(data);
-				}else if(searchDto.getType()!= null
-							&&	data.getType().equals(searchDto.getType())){
-					respList.add(data);
-				}else if(searchDto.getSize()!= 0
-						&&	data.getSize()==searchDto.getSize()){
-					respList.add(data);
-				}else if(searchDto.getColor()!= null
-						&&	data.getColor().equals(searchDto.getColor())){
-					respList.add(data);
-				}else if(searchDto.isCollaboration()!= false
-						&&	data.isCollaboration()==searchDto.isCollaboration()){
-					respList.add(data);
+			// case1. 전체 목록을 조회해서 순차적으로 비교한다
+			List<Product> respList = new ArrayList<>();
+			for(Product dbData : productRepository.selectList()) {
+				if(maxPrice == 0) {
+					if(dbData.getPrice()>=minPrice) {
+						respList.add(dbData);
+					}
+				}else if(minPrice == 0) {
+					if(dbData.getPrice()<=maxPrice) {
+						respList.add(dbData);
+					}
+				}
+				else if(maxPrice>minPrice) {
+					if(dbData.getPrice()>=minPrice
+							&& dbData.getPrice()<=maxPrice) {
+						respList.add(dbData);
+					}
 				}
 			}
 			return respList;
 		}
-		
-//		
-//		String brand = searchDto.getBrand()!=null?searchDto.getBrand():"";
-//		String type = searchDto.getType()!=null?searchDto.getType():"";
-//		int size = searchDto.getSize()!=0?searchDto.getSize():0;
-//		String color = searchDto.getColor()!=null?searchDto.getColor():"";
-//		boolean collaborationYn = searchDto.isCollaborationYn();
-//		
-//		// 조건 미존재시  전체리스트
-//		if(	brand.equals("") 
-//				&& type.equals("")
-//				&& size == 0
-//				&& color.equals("")
-//				&& collaborationYn == false	) {
-//			return productRepository.selectList();
-//		}else {
-//			// 조건 존재시
-//			//조건 분기가 너무 많아진다..
-//			List<Product> dbList = productRepository.selectList();
-//			List<Product> respList = new ArrayList<>();
-//		
-//			// 모두 조건 존재시
-//			for(Product dbData : dbList) {
-//				if(!brand.equals("") 
-//						&& !type.equals("")
-//						&& size != 0
-//						&& !color.equals("")
-//						&& collaborationYn != false) {
-//					if(dbData.getBrand().equals(brand)
-//							&& dbData.getType().equals(type)
-//							&& dbData.getSize()==size
-//							&& dbData.getColor().equals(color)
-//							&& dbData.isCollaborationYn() == true) {
-//						respList.add(dbData);
-//					}
-//				}
-//			}
-//			
-//			return respList;
-//		}
-//		Map<String,Object> searchMap = new HashMap<>();
-//		if(dto.getBrand()!=null) {
-//			searchMap.put("brand", dto.getBrand());
-//		}
-//		if(dto.getType()!=null) {
-//			searchMap.put("type", dto.getType());
-//		}
-//		if(dto.getSize()!=0) {
-//			searchMap.put("size", dto.getSize());
-//		}
-//		if(dto.getColor()!=null) {
-//			searchMap.put("color", dto.getColor());
-//		}
-//		if(dto.isCollaborationYn()==true) {
-//			searchMap.put("collaborationYn", dto.isCollaborationYn());
-//		}
-//		
-//		if(searchMap != null && searchMap.isEmpty()) {
-//			List<Product> dbList = productRepository.selectList();
-//			for(Product dbData : dbList) {
-//				if(searchMap.containsKey("brand")
-//						&& searchMap.containsKey("type")
-//						&& searchMap.containsKey("size")
-//						&& searchMap.containsKey("color")
-//						&& searchMap.containsKey("collaborationYn")	) {
-//					
-//				}
-//			}
-//			
-//		}else {
-//			return productRepository.selectList();
-//		}
 	}
 
 	public Product selectOne(String productId) throws Exception {
