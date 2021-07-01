@@ -21,7 +21,7 @@ public class ProductRepository {
 		return respList;
 	}
 
-	public Product selectGet(String productId)throws Exception{
+	public Product selectOne(String productId)throws Exception{
 		return (Product)DB.get(productId);
 	}
 	public int getCount()throws Exception{
@@ -41,9 +41,8 @@ public class ProductRepository {
 		DB.put(dto.getProductId(), dto);
 	}
 	
-	public void updateProduct(Product dto)throws Exception{
-		Product dbData = (Product) DB.get(dto.getProductId());
-		
+	public void updateProduct(String productId,Product dto)throws Exception{
+		DB.replace(productId, dto);
 	}
 	
 	public void deleteProduct(String productId)throws Exception{
