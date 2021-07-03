@@ -3,130 +3,134 @@
 
 <mapper namespace="com.honeybae.project.mapper.ProductMapper">
 
-	<sql id="colume">
-			productNo
-			,brand
-			,collaborationYn
-			,collaborationBrand
-			,type
-			,model
-			,name
-			,color
-			,price
-			,size
-			,quantity
-			,description
-			,inMaterial
-			,outMaterial
-			,realSizeLength
-			,realSizeWidth
-			,weight
-			,usedYn
-			,releaseDate
-			,retroYn
-			,writer
-			,writeTime
-			,updateTime
-			,soldoutYn
-			,deleteYn
-			,readCount
-	</sql>
-	
-	<sql id="addColume">
-			#{productNo}
-			,#{brand}
-			,#{collaborationYn}
-			,#{collaborationBrand}
-			,#{type}
-			,#{model}
-			,#{name}
-			,#{color}
-			,#{price}
-			,#{size}
-			,#{quantity}
-			,#{description}
-			,#{inMaterial}
-			,#{outMaterial}
-			,#{realSizeLength}
-			,#{realSizeWidth}
-			,#{weight}
-			,#{usedYn}
-			,#{releaseDate}
-			,#{retroYn}
-			,#{writer}
-			,#{writeTime}
-			,#{updateTime}
-			,#{soldoutYn}
-			,#{deleteYn}
-			,#{readCount}
-	
-	</sql>
-	
-	<sql id="WHERE">
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="productNo != null and productNo != '' ">
-				AND	productNo LIKE CONCAT('%', #{productNo} ,'%')
-			</if>
-			<if test="brand != null and brand != '' ">
-				AND	brand = #{brand}
-			</if>
-			<if test="type != null and type != '' ">
-				AND	type = #{type}
-			</if>
-				AND	deleteYN = 'N'
-		</trim>
-	
-	</sql>
-
 	<select id="selectList" parameterType="Product" resultType="Product">
-		SELECT 		<include refid="colume"/>
+		SELECT 		productId
+					,brand
+					,collaboration
+					,collaborationBrand
+					,type
+					,model
+					,name
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,inMaterial
+					,outMaterial
+					,realSizeLength
+					,realSizeWidth
+					,weight
+					,used
+					,releaseDate
+					,retro
+					,writer
+					,writeTime
+					,updateTime
+					,soldout
+					,delete
+					,readCount
 		FROM		product
-		<include refid="WHERE"/>
-		ORDER BY productNo		
+		WHERE 		delete = 'N'
 	</select>
 	
 	<select id="selectGet" parameterType="Product" resultType="Product">
-		SELECT 		<include refid="colume"/>
+		SELECT 		productId
+					,brand
+					,collaboration
+					,collaborationBrand
+					,type
+					,model
+					,name
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,inMaterial
+					,outMaterial
+					,realSizeLength
+					,realSizeWidth
+					,weight
+					,used
+					,releaseDate
+					,retro
+					,writer
+					,writeTime
+					,updateTime
+					,soldout
+					,delete
+					,readCount
 		FROM		product
-		<include refid="WHERE"/>		
+		WHERE		productId = #{product_id}		
 	</select>
 	
-	<insert id="productAdd" parameterType="Product">
-		INSERT INTO product (<include refid="colume"/>)
-		VALUES 		(<include refid="addColume"/>)
+	<insert id="addPorduct" parameterType="Product">
+		INSERT INTO product 
+		(
+					productId
+					,brand
+					,collaboration
+					,collaborationBrand
+					,type
+					,model
+					,name
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,inMaterial
+					,outMaterial
+					,realSizeLength
+					,realSizeWidth
+					,weight
+					,used
+					,releaseDate
+					,retro
+					,writer
+					,writeTime
+					,updateTime
+					,soldout
+					,delete
+					,readCount
+		)
+		VALUES 		
+		(
+					#{productId}
+					,#{brand}
+					,#{collaboration}
+					,#{collaborationBrand}
+					,#{type}
+					,#{model}
+					,#{name}
+					,#{color}
+					,#{price}
+					,#{size}
+					,#{quantity}
+					,#{description}
+					,#{inMaterial}
+					,#{outMaterial}
+					,#{realSizeLength}
+					,#{realSizeWidth}
+					,#{weight}
+					,#{used}
+					,#{releaseDate}
+					,#{retro}
+					,#{writer}
+					,#{writeTime}
+					,#{updateTime}
+					,#{soldout}
+					,#{delete}
+					,#{readCount}
+		)
 	</insert>
 	
-	<select id="count" parameterType="Product" resultType="int">
-		SELECT 		count(*)
-		FROM		product
-		<include refid="WHERE"/>
-	
-	</select>
-	
-	
-	<update id="readCount" parameterType="int">
-		UPDATE 		product
-		SET			readCount = readCount + 1
-		<include refid="WHERE"/>
-	</update>
-	
-	<delete id="delete" parameterType="Product">
-		DELETE FROM product
-		<include refid="WHERE"/>
-	</delete>
-	
-	<update id="productDelete" parameterType="Product">
-		UPDATE		product
-		SET			deleteYn = #{deleteYn}
-					,updateTime = #{updateTime}
-		<include refid="WHERE"/>
-	</update>
-	
-	<update id="productUpdate" parameterType="Product">
+	<update id="updateProduct" parameterType="Product">
 		UPDATE		product
 		SET			
 					brand = #{brand}
-					,collaborationYn = #{collaborationYn}
+					,collaboration = #{collaboration}
 					,collaborationBrand = #{collaborationBrand}
 					,type = #{type}
 					,model = #{model}
@@ -141,12 +145,38 @@
 					,realSizeLength = #{realSizeLength}
 					,realSizeWidth = #{realSizeWidth}
 					,weight = #{weight}
-					,usedYn = #{usedYn}
+					,used = #{used}
 					,releaseDate = #{releaseDate}
-					,retroYn = #{retroYn}
+					,retro = #{retro}
 					,updateTime = #{updateTime}
-		<include refid="WHERE"/>
+		WHERE		productId = #{productId}
 	</update>
+	
+	<update id="productDelete" parameterType="Product">
+		UPDATE		product
+		SET			delete = #{delete}
+					,updateTime = #{updateTime}
+		WHERE		productId = #{productId}
+	</update>
+	
+	<delete id="delete" parameterType="Product">
+		DELETE 
+		FROM 		product
+		WHERE		productId=#{productId}
+	</delete>
+	
+	<select id="count" parameterType="Product" resultType="int">
+		SELECT 		count(*)
+		FROM		product
+	</select>
+	
+	<update id="readCount" parameterType="int">
+		UPDATE 		product
+		SET			readCount = readCount + 1
+		WHERE		productId = #{productId}
+	</update>
+	
+	
 
 
 
