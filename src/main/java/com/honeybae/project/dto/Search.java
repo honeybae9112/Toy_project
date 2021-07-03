@@ -12,6 +12,9 @@ public class Search {
 	 private boolean used;
 	 private boolean soldout;
 	 
+	public Search() {
+	}
+
 	public Search(int minPrice, int maxPrice, String brand, String type, int size, boolean collaboration, boolean retro,
 			boolean used, boolean soldout) {
 		super();

@@ -65,7 +65,7 @@ AUTO_INCREMENT=11
 					,if(SOLDOUT,'true','false') as "SOLDOUT"
 					,VIEW_CNT
 		FROM		PRODUCT
-		WHERE 		DELETE_FL = 0
+		WHERE 		DELETE_FL IS false
 	</select>
 	
 	<select id="selectList" parameterType="Search"  resultType="Product">
@@ -95,14 +95,18 @@ AUTO_INCREMENT=11
 					,if(SOLDOUT,'true','false') as "SOLDOUT"
 					,VIEW_CNT
 		FROM		PRODUCT
-		WHERE 		DELETE_FL = 0
+		WHERE 		DELETE_FL IS false
 		AND			BRAND = #{brand}
 		AND			TYPE = #{type}
 		AND			SIZE = #{size}
-		AND			COLLABORATION = #{collaboration}
-		AND			RETRO = #{retro}
-		AND			USED = #{used}
-		AND			SOLDOUT = #{soldout}
+		AND			COLLABORATION IS ${collaboration}
+		AND			RETRO IS ${retro}
+		AND			USED IS ${used}
+		AND			SOLDOUT IS ${soldout}
+		<![CDATA[
+		AND 		PRICE >= #{minPrice} 
+		AND 		PRICE <= #{maxPrice}
+		]]>
 	</select>
 	
 	<select id="selectOne" parameterType="int" resultType="Product">
@@ -195,34 +199,34 @@ AUTO_INCREMENT=11
 	<update id="updateProduct" parameterType="Product">
 		UPDATE		PRODUCT
 		SET			
-					BRAND = #{brand}
-					,COLLABORATION = #{collaboration}
-					,COLLABORATION_BRAND = #{collaborationBrand}
-					,TYPE = #{type}
-					,MODEL = #{model}
-					,NAME = #{name}
-					,COLOR = #{color}
-					,PRICE = #{price}
-					,SIZE = #{size}
-					,QUANTITY = #{quantity}
-					,DESCRIPTION = #{description}
-					,IN_MATERIAL = #{inMaterial}
-					,OUT_MATERIAL = #{outMaterial}
-					,REAL_SIZE_LENGTH = #{realSizeLength}
-					,REAL_SIZE_WIDTH = #{realSizeWidth}
-					,WEIGHT = #{weight}
-					,USED = #{used}
-					,RELEASE_DATE = #{releaseDate}
-					,RETRO = #{retro}
-					,SOLDOUT = #{soldout}
-					,UPDATE_TIME = #{updateTime}
-		WHERE		PRODUCT_ID=#{productId}
+					BRAND := #{brand}
+					,COLLABORATION := #{collaboration}
+					,COLLABORATION_BRAND := #{collaborationBrand}
+					,TYPE := #{type}
+					,MODEL := #{model}
+					,NAME := #{name}
+					,COLOR := #{color}
+					,PRICE := #{price}
+					,SIZE := #{size}
+					,QUANTITY := #{quantity}
+					,DESCRIPTION := #{description}
+					,IN_MATERIAL := #{inMaterial}
+					,OUT_MATERIAL := #{outMaterial}
+					,REAL_SIZE_LENGTH := #{realSizeLength}
+					,REAL_SIZE_WIDTH := #{realSizeWidth}
+					,WEIGHT := #{weight}
+					,USED := #{used}
+					,RELEASE_DATE := #{releaseDate}
+					,RETRO := #{retro}
+					,SOLDOUT := #{soldout}
+					,UPDATE_TIME := #{updateTime}
+		WHERE		PRODUCT_ID := #{productId}
 	</update>
 	
 	<update id="deleteProduct" parameterType="Product">
 		UPDATE		PRODUCT
-		SET			DELETE_FL = 1
-					,UPDATE_TIME = now()
+		SET			DELETE_FL := true
+					,UPDATE_TIME := now()
 		WHERE		PRODUCT_ID=#{productId}
 	</update>
 	
@@ -235,7 +239,7 @@ AUTO_INCREMENT=11
 	
 	<update id="viewCount" parameterType="int">
 		UPDATE 		PRODUCT
-		SET			VIEW_CNT = VIEW_CNT + 1
+		SET			VIEW_CNT := VIEW_CNT + 1
 		WHERE		PRODUCT_ID = #{productId}
 	</update>
 	
