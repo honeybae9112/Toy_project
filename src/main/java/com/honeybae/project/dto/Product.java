@@ -2,7 +2,7 @@ package com.honeybae.project.dto;
 
 public class Product {
 	
-	private String productId;
+	private int productId;
 	private String brand;
 	private boolean collaboration;
 	private String collaborationBrand;
@@ -19,24 +19,23 @@ public class Product {
 	private float realSizeLength;
 	private float realSizeWidth;
 	private float weight;
-	private boolean usedYn;
+	private boolean used;
 	private String releaseDate;
 	private boolean retro;
 	private String writer;
 	private String writeTime;
 	private String updateTime;
 	private boolean soldout;
-	private boolean delete;
-	private int readCount;
+	private int viewCount;
 	
 	public Product() {
 	}
 
-	public Product(String productId, String brand, boolean collaboration, String collaborationBrand, String type,
+	public Product(int productId, String brand, boolean collaboration, String collaborationBrand, String type,
 			String model, String name, String color, int price, int size, int quantity, String description,
 			String inMaterial, String outMaterial, float realSizeLength, float realSizeWidth, float weight,
-			boolean usedYn, String releaseDate, boolean retro, String writer, String writeTime, String updateTime,
-			boolean soldout, boolean delete, int readCount) {
+			boolean used, String releaseDate, boolean retro, String writer, String writeTime, String updateTime,
+			boolean soldout, int viewCount) {
 		super();
 		this.productId = productId;
 		this.brand = brand;
@@ -55,22 +54,21 @@ public class Product {
 		this.realSizeLength = realSizeLength;
 		this.realSizeWidth = realSizeWidth;
 		this.weight = weight;
-		this.usedYn = usedYn;
+		this.used = used;
 		this.releaseDate = releaseDate;
 		this.retro = retro;
 		this.writer = writer;
 		this.writeTime = writeTime;
 		this.updateTime = updateTime;
 		this.soldout = soldout;
-		this.delete = delete;
-		this.readCount = readCount;
+		this.viewCount = viewCount;
 	}
 
-	public String getProductId() {
+	public int getProductId() {
 		return productId;
 	}
 
-	public void setProductId(String productId) {
+	public void setProductId(int productId) {
 		this.productId = productId;
 	}
 
@@ -202,12 +200,12 @@ public class Product {
 		this.weight = weight;
 	}
 
-	public boolean isUsedYn() {
-		return usedYn;
+	public boolean isUsed() {
+		return used;
 	}
 
-	public void setUsedYn(boolean usedYn) {
-		this.usedYn = usedYn;
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 
 	public String getReleaseDate() {
@@ -258,20 +256,12 @@ public class Product {
 		this.soldout = soldout;
 	}
 
-	public boolean isDelete() {
-		return delete;
+	public int getViewCount() {
+		return viewCount;
 	}
 
-	public void setDelete(boolean delete) {
-		this.delete = delete;
-	}
-
-	public int getReadCount() {
-		return readCount;
-	}
-
-	public void setReadCount(int readCount) {
-		this.readCount = readCount;
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
 	}
 
 	@Override
@@ -281,11 +271,9 @@ public class Product {
 				+ name + ", color=" + color + ", price=" + price + ", size=" + size + ", quantity=" + quantity
 				+ ", description=" + description + ", inMaterial=" + inMaterial + ", outMaterial=" + outMaterial
 				+ ", realSizeLength=" + realSizeLength + ", realSizeWidth=" + realSizeWidth + ", weight=" + weight
-				+ ", usedYn=" + usedYn + ", releaseDate=" + releaseDate + ", retro=" + retro + ", writer=" + writer
-				+ ", writeTime=" + writeTime + ", updateTime=" + updateTime + ", soldout=" + soldout + ", delete="
-				+ delete + ", readCount=" + readCount + "]";
+				+ ", used=" + used + ", releaseDate=" + releaseDate + ", retro=" + retro + ", writer=" + writer
+				+ ", writeTime=" + writeTime + ", updateTime=" + updateTime + ", soldout=" + soldout + ", viewCount="
+				+ viewCount + "]";
 	}
-	
-	
-	
+
 }

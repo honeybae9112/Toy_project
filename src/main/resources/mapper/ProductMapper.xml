@@ -2,103 +2,170 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.honeybae.project.mapper.ProductMapper">
+<!--  
+CREATE TABLE `product` (
+	`PRODUCT_ID` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'idx',
+	`BRAND` VARCHAR(20) NOT NULL COMMENT '브랜드' COLLATE 'utf8_general_ci',
+	`TYPE` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '신발타입' COLLATE 'utf8_general_ci',
+	`MODEL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '시리즈명' COLLATE 'utf8_general_ci',
+	`NAME` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '신발명' COLLATE 'utf8_general_ci',
+	`COLOR` VARCHAR(10) NOT NULL DEFAULT '' COMMENT '색상' COLLATE 'utf8_general_ci',
+	`SIZE` INT(3) NOT NULL COMMENT '사이즈',
+	`PRICE` INT(11) NOT NULL COMMENT '가격',
+	`QUANTITY` INT(11) NOT NULL COMMENT '수량',
+	`COLLABORATION` TINYINT(1) NOT NULL COMMENT '협업여부',
+	`COLLABORATION_BRAND` VARCHAR(20) NULL DEFAULT '' COMMENT '협업브랜드' COLLATE 'utf8_general_ci',
+	`DESCRIPTION` TEXT NOT NULL COMMENT '설명' COLLATE 'utf8_general_ci',
+	`IN_MATERIAL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '안감소재' COLLATE 'utf8_general_ci',
+	`OUT_MATERIAL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '외피소재' COLLATE 'utf8_general_ci',
+	`REAL_SIZE_LENGTH` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측길이',
+	`REAL_SIZE_WIDTH` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측너비',
+	`WEIGHT` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '중량',
+	`USED` TINYINT(1) NOT NULL COMMENT '중고여부',
+	`RELEASE_DATE` DATE NULL DEFAULT NULL COMMENT '발매일',
+	`RETRO` CHAR(1) NOT NULL DEFAULT 'N' COMMENT '재발매여부' COLLATE 'utf8_general_ci',
+	`WRITER` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '등록자' COLLATE 'utf8_general_ci',
+	`WRITE_TIME` DATETIME NOT NULL COMMENT '등록시간',
+	`UPDATE_TIME` DATETIME NULL DEFAULT NULL COMMENT '수정시간',
+	`SOLDOUT` TINYINT(1) NOT NULL COMMENT '판매완료여부',
+	`DELETE_FL` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '삭제여부',
+	`VIEW_CNT` INT(11) NOT NULL DEFAULT '0' COMMENT '조회수',
+	PRIMARY KEY (`PRODUCT_ID`) USING BTREE
+)
+COMMENT='상품'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=11
+-->
 
-	<select id="selectList" parameterType="Product" resultType="Product">
-		SELECT 		productId
-					,brand
-					,collaboration
-					,collaborationBrand
-					,type
-					,model
-					,name
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,inMaterial
-					,outMaterial
-					,realSizeLength
-					,realSizeWidth
-					,weight
-					,used
-					,releaseDate
-					,retro
-					,writer
-					,writeTime
-					,updateTime
-					,soldout
-					,delete
-					,readCount
-		FROM		product
-		WHERE 		delete = 'N'
+	<select id="selectAll"  resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE 		DELETE_FL = 0
 	</select>
 	
-	<select id="selectGet" parameterType="Product" resultType="Product">
-		SELECT 		productId
-					,brand
-					,collaboration
-					,collaborationBrand
-					,type
-					,model
-					,name
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,inMaterial
-					,outMaterial
-					,realSizeLength
-					,realSizeWidth
-					,weight
-					,used
-					,releaseDate
-					,retro
-					,writer
-					,writeTime
-					,updateTime
-					,soldout
-					,delete
-					,readCount
-		FROM		product
-		WHERE		productId = #{product_id}		
+	<select id="selectList" parameterType="Search"  resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE 		DELETE_FL = 0
+		AND			BRAND = #{brand}
+		AND			TYPE = #{type}
+		AND			SIZE = #{size}
+		AND			COLLABORATION = #{collaboration}
+		AND			RETRO = #{retro}
+		AND			USED = #{used}
+		AND			SOLDOUT = #{soldout}
 	</select>
 	
-	<insert id="addPorduct" parameterType="Product">
-		INSERT INTO product 
+	<select id="selectOne" parameterType="int" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		PRODUCT_ID = #{productId}
+	</select>
+	
+	<insert id="addProduct" parameterType="Product">
+		INSERT INTO PRODUCT 
 		(
-					productId
-					,brand
-					,collaboration
-					,collaborationBrand
-					,type
-					,model
-					,name
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,inMaterial
-					,outMaterial
-					,realSizeLength
-					,realSizeWidth
-					,weight
-					,used
-					,releaseDate
-					,retro
-					,writer
-					,writeTime
-					,updateTime
-					,soldout
-					,delete
-					,readCount
+					BRAND
+					,COLLABORATION
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,USED
+					,RELEASE_DATE
+					,RETRO
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,SOLDOUT
+					,VIEW_CNT
 		)
 		VALUES 		
 		(
-					#{productId}
-					,#{brand}
+					#{brand}
 					,#{collaboration}
 					,#{collaborationBrand}
 					,#{type}
@@ -121,59 +188,55 @@
 					,#{writeTime}
 					,#{updateTime}
 					,#{soldout}
-					,#{delete}
-					,#{readCount}
+					,#{viewCount}
 		)
 	</insert>
 	
 	<update id="updateProduct" parameterType="Product">
-		UPDATE		product
+		UPDATE		PRODUCT
 		SET			
-					brand = #{brand}
-					,collaboration = #{collaboration}
-					,collaborationBrand = #{collaborationBrand}
-					,type = #{type}
-					,model = #{model}
-					,name = #{name}
-					,color = #{color}
-					,price = #{price}
-					,size = #{size}
-					,quantity = #{quantity}
-					,description = #{description}
-					,inMaterial = #{inMaterial}
-					,outMaterial = #{outMaterial}
-					,realSizeLength = #{realSizeLength}
-					,realSizeWidth = #{realSizeWidth}
-					,weight = #{weight}
-					,used = #{used}
-					,releaseDate = #{releaseDate}
-					,retro = #{retro}
-					,updateTime = #{updateTime}
-		WHERE		productId = #{productId}
+					BRAND = #{brand}
+					,COLLABORATION = #{collaboration}
+					,COLLABORATION_BRAND = #{collaborationBrand}
+					,TYPE = #{type}
+					,MODEL = #{model}
+					,NAME = #{name}
+					,COLOR = #{color}
+					,PRICE = #{price}
+					,SIZE = #{size}
+					,QUANTITY = #{quantity}
+					,DESCRIPTION = #{description}
+					,IN_MATERIAL = #{inMaterial}
+					,OUT_MATERIAL = #{outMaterial}
+					,REAL_SIZE_LENGTH = #{realSizeLength}
+					,REAL_SIZE_WIDTH = #{realSizeWidth}
+					,WEIGHT = #{weight}
+					,USED = #{used}
+					,RELEASE_DATE = #{releaseDate}
+					,RETRO = #{retro}
+					,SOLDOUT = #{soldout}
+					,UPDATE_TIME = #{updateTime}
+		WHERE		PRODUCT_ID=#{productId}
 	</update>
 	
-	<update id="productDelete" parameterType="Product">
-		UPDATE		product
-		SET			delete = #{delete}
-					,updateTime = #{updateTime}
-		WHERE		productId = #{productId}
+	<update id="deleteProduct" parameterType="Product">
+		UPDATE		PRODUCT
+		SET			DELETE_FL = 1
+					,UPDATE_TIME = now()
+		WHERE		PRODUCT_ID=#{productId}
 	</update>
 	
-	<delete id="delete" parameterType="Product">
+	<delete id="delete" parameterType="int">
 		DELETE 
-		FROM 		product
-		WHERE		productId=#{productId}
+		FROM 		PRODUCT
+		WHERE		PRODUCT_ID=#{productId}
 	</delete>
 	
-	<select id="count" parameterType="Product" resultType="int">
-		SELECT 		count(*)
-		FROM		product
-	</select>
 	
-	<update id="readCount" parameterType="int">
-		UPDATE 		product
-		SET			readCount = readCount + 1
-		WHERE		productId = #{productId}
+	<update id="viewCount" parameterType="int">
+		UPDATE 		PRODUCT
+		SET			VIEW_CNT = VIEW_CNT + 1
+		WHERE		PRODUCT_ID = #{productId}
 	</update>
 	
 	

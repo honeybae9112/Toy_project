@@ -6,17 +6,18 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.honeybae.project.dto.Product;
+import com.honeybae.project.dto.Search;
 @Repository
 @Mapper
 public interface ProductMapper {
 	
-	public List<Product> selectList(Product dto)throws Exception;
-	public Product selectGet(Product dto);
-	public void addProduct(Product dto);
-	public void updateProduct(Product dto);
-	public void deleteProduct(Product dto);
-	public void delete(Product dto);
-	public int count(Product dto);
-	public void readCount(Product dto);
+	public List<Product> selectAll()throws Exception;
+	public List<Product> selectList(Search searchDto)throws Exception;
+	public Product selectOne(int productId);
+	public void addProduct(Product productDto);
+	public void updateProduct(Product productDto);
+	public void deleteProduct(int productId);
+	public void delete(int productId);
+	public void viewCount(int productId);
 
 }

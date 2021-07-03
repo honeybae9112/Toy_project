@@ -40,7 +40,7 @@ public class ProductionController {
 		return respData;
 	}
 	@GetMapping(value="/product/{productId}")
-	public Map<String,Object> get(@PathVariable("productId")String productId)throws Exception{
+	public Map<String,Object> get(@PathVariable("productId")int productId)throws Exception{
 		logger.debug("productGet");
 		Product data = productService.selectOne(productId);
 		Map<String,Object> respData = new LinkedHashMap<>();
@@ -61,7 +61,7 @@ public class ProductionController {
 		return respData;
 	}
 	@PutMapping(value="/product/{productId}")
-	public Map<String,String> update(@PathVariable("productId")String productId,
+	public Map<String,String> update(@PathVariable("productId")int productId,
 									@RequestBody Product dto)throws Exception{
 		logger.debug("productUpdate");
 		productService.updateProduct(productId,dto);
@@ -70,7 +70,7 @@ public class ProductionController {
 		return respData;
 	}
 	@DeleteMapping(value="/product/{productId}")
-	public Map<String,String> delete(@PathVariable("productId")String productId)throws Exception{
+	public Map<String,String> delete(@PathVariable("productId")int productId)throws Exception{
 		logger.debug("productDelete");
 		productService.deleteProduct(productId);
 		Map<String,String> respData = new HashMap<String,String>();
