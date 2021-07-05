@@ -30,7 +30,8 @@ CREATE TABLE `product` (
 	`SOLDOUT` TINYINT(1) NOT NULL COMMENT '판매완료여부',
 	`DELETE_FL` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '삭제여부',
 	`VIEW_CNT` INT(11) NOT NULL DEFAULT '0' COMMENT '조회수',
-	PRIMARY KEY (`PRODUCT_ID`) USING BTREE
+	PRIMARY KEY (`PRODUCT_ID`) USING BTREE,
+    INDEX `product_BRAND_IDX` (`BRAND`, `TYPE`, `SIZE`) USING BTREE
 )
 COMMENT='상품'
 COLLATE='utf8_general_ci'
@@ -95,8 +96,7 @@ AUTO_INCREMENT=11
 					,if(SOLDOUT,'true','false') as "SOLDOUT"
 					,VIEW_CNT
 		FROM		PRODUCT
-		WHERE 		DELETE_FL IS false
-		AND			BRAND = #{brand}
+		WHERE		BRAND = #{brand}
 		AND			TYPE = #{type}
 		AND			SIZE = #{size}
 		AND			COLLABORATION IS ${collaboration}
@@ -107,6 +107,7 @@ AUTO_INCREMENT=11
 		AND 		PRICE >= #{minPrice} 
 		AND 		PRICE <= #{maxPrice}
 		]]>
+		AND 		DELETE_FL IS false
 	</select>
 		
 	<select id="selectOne" parameterType="int" resultType="Product">

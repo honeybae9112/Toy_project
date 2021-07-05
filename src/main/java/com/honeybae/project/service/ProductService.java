@@ -2,7 +2,9 @@ package com.honeybae.project.service;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,13 @@ public class ProductService  {
 		Boolean used=searchDto.getUsed();
 		Boolean soldout=searchDto.getSoldout();
 		
+		// 중복 빈도가 가장 적은 것 (세분화 된것?) 
+		// WHERE절에 자주 활용 되는것
+		
+		// 예상 index
+		// brand = 30개 이상(nike.adidas.puma 등등)
+		// type = 운동화,농구화,스니커즈 등등 (약10개항목)
+		// size = 200 ~ 300 ( 10개)
 		
 		if( brand == null
 				&& type == null
