@@ -7,16 +7,16 @@ public class Search {
 	 private String brand;
 	 private String type;
 	 private int	size;
-	 private boolean collaboration;
-	 private boolean retro;
-	 private boolean used;
-	 private boolean soldout;
+	 private Boolean collaboration;
+	 private Boolean retro;
+	 private Boolean used;
+	 private Boolean soldout;
 	 
 	public Search() {
 	}
 
-	public Search(int minPrice, int maxPrice, String brand, String type, int size, boolean collaboration, boolean retro,
-			boolean used, boolean soldout) {
+	public Search(int minPrice, int maxPrice, String brand, String type, int size, Boolean collaboration, Boolean retro,
+			Boolean used, Boolean soldout) {
 		super();
 		this.minPrice = minPrice;
 		this.maxPrice = maxPrice;
@@ -69,35 +69,35 @@ public class Search {
 		this.size = size;
 	}
 
-	public boolean isCollaboration() {
+	public Boolean getCollaboration() {
 		return collaboration;
 	}
 
-	public void setCollaboration(boolean collaboration) {
+	public void setCollaboration(Boolean collaboration) {
 		this.collaboration = collaboration;
 	}
 
-	public boolean isRetro() {
+	public Boolean getRetro() {
 		return retro;
 	}
 
-	public void setRetro(boolean retro) {
+	public void setRetro(Boolean retro) {
 		this.retro = retro;
 	}
 
-	public boolean isUsed() {
+	public Boolean getUsed() {
 		return used;
 	}
 
-	public void setUsed(boolean used) {
+	public void setUsed(Boolean used) {
 		this.used = used;
 	}
 
-	public boolean isSoldout() {
+	public Boolean getSoldout() {
 		return soldout;
 	}
 
-	public void setSoldout(boolean soldout) {
+	public void setSoldout(Boolean soldout) {
 		this.soldout = soldout;
 	}
 

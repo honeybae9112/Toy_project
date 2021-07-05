@@ -18,30 +18,29 @@ public class ProductService  {
 	ProductMapper productMapper;
 
 	public List<Product> selectList(Search searchDto) throws Exception {
-		// 조건1
-		// price 최소값 최대값 사이의 리스트 리턴 
 		int minPrice = searchDto.getMinPrice();
 		int maxPrice = searchDto.getMaxPrice();
 		String brand = searchDto.getBrand();
 		String type = searchDto.getType();
 		int size = searchDto.getSize();
-		boolean collaboration= searchDto.isCollaboration();
-		boolean retro=searchDto.isRetro();
-		boolean used=searchDto.isUsed();
-		boolean soldout=searchDto.isSoldout();
+		Boolean collaboration= searchDto.getCollaboration();
+		Boolean retro=searchDto.getRetro();
+		Boolean used=searchDto.getUsed();
+		Boolean soldout=searchDto.getSoldout();
 		
 		
 		if( brand == null
 				&& type == null
 				&& size ==0
-				&& collaboration == false
-				&& retro == false
-				&& used == false
-				&& soldout == false
+				&& collaboration == null
+				&& retro == null
+				&& used == null
+				&& soldout == null
 				&& minPrice ==0
 				&& maxPrice ==0) {
 			return productMapper.selectAll();
 		}else {
+			// 개별 1개 조건씩 조회
 			return productMapper.selectList(searchDto);
 		}
 	}

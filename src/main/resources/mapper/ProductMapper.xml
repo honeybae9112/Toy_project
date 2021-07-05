@@ -108,7 +108,7 @@ AUTO_INCREMENT=11
 		AND 		PRICE <= #{maxPrice}
 		]]>
 	</select>
-	
+		
 	<select id="selectOne" parameterType="int" resultType="Product">
 		SELECT 		PRODUCT_ID
 					,BRAND
@@ -220,7 +220,7 @@ AUTO_INCREMENT=11
 					,RETRO := #{retro}
 					,SOLDOUT := #{soldout}
 					,UPDATE_TIME := #{updateTime}
-		WHERE		PRODUCT_ID := #{productId}
+		WHERE		PRODUCT_ID = #{productId}
 	</update>
 	
 	<update id="deleteProduct" parameterType="Product">
