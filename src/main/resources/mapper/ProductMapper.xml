@@ -110,6 +110,243 @@ AUTO_INCREMENT=29
 		]]>
 		AND 		DELETE_FL IS false
 	</select>
+	<select id="selectBrand" parameterType="String" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		BRAND = #{brand}
+	</select>
+	
+	<select id="selectType" parameterType="String" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		TYPE = #{type}
+	</select>
+	<select id="selectSize" parameterType="int" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		SIZE = ${size}
+	</select>
+	
+	 <select id="selectCollaboration" parameterType="boolean" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		COLLABORATION = ${collaboration}
+	</select>
+	<select id="selectRetro" parameterType="boolean" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		RETRO = ${retro}
+	</select>
+	<select id="selectUsed" parameterType="boolean" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		USED = ${used}
+	</select>
+	<select id="selectSoldout" parameterType="boolean" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		SOLDOUT = ${soldout}
+	</select>
+	<select id="selectPrice" parameterType="Map" resultType="Product">
+		SELECT 		PRODUCT_ID
+					,BRAND
+					,if(COLLABORATION,'true','false') as "COLLABORATION"
+					,COLLABORATION_BRAND
+					,TYPE
+					,MODEL
+					,NAME
+					,COLOR
+					,PRICE
+					,SIZE
+					,QUANTITY
+					,DESCRIPTION
+					,IN_MATERIAL
+					,OUT_MATERIAL
+					,REAL_SIZE_LENGTH
+					,REAL_SIZE_WIDTH
+					,WEIGHT
+					,if(USED,'true','false') as "USED"
+					,RELEASE_DATE
+					,if(RETRO,'true','false') as "RETRO"
+					,WRITER
+					,WRITE_TIME
+					,UPDATE_TIME
+					,if(SOLDOUT,'true','false') as "SOLDOUT"
+					,VIEW_CNT
+		FROM		PRODUCT
+		WHERE		PRICE BETWEEN #{minPrice} AND #{maxPrice}
+	</select>	
+
+	
+
 		
 	<select id="selectOne" parameterType="int" resultType="Product">
 		SELECT 		PRODUCT_ID

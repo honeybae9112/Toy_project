@@ -1,5 +1,7 @@
 package com.honeybae.project.dto;
 
+import java.util.Objects;
+
 public class Product {
 	
 	private int productId;
@@ -262,6 +264,23 @@ public class Product {
 
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(productId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Product))
+			return false;
+		Product other = (Product) obj;
+		return productId == other.productId;
 	}
 
 	@Override
