@@ -1,475 +1,462 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.honeybae.project.mapper.ProductMapper">
+<mapper namespace="com.honeybae.project.mapper.productMapper">
 <!--  
 CREATE TABLE `product` (
-	`PRODUCT_ID` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'idx',
-	`BRAND` VARCHAR(20) NOT NULL COMMENT '브랜드' COLLATE 'utf8_general_ci',
-	`TYPE` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '신발타입' COLLATE 'utf8_general_ci',
-	`MODEL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '시리즈명' COLLATE 'utf8_general_ci',
-	`NAME` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '신발명' COLLATE 'utf8_general_ci',
-	`COLOR` VARCHAR(10) NOT NULL DEFAULT '' COMMENT '색상' COLLATE 'utf8_general_ci',
-	`SIZE` SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '사이즈',
-	`PRICE` INT(11) NOT NULL COMMENT '가격',
-	`QUANTITY` INT(11) NOT NULL COMMENT '수량',
-	`COLLABORATION` TINYINT(1) NOT NULL COMMENT '협업여부',
-	`COLLABORATION_BRAND` VARCHAR(20) NULL DEFAULT '' COMMENT '협업브랜드' COLLATE 'utf8_general_ci',
-	`DESCRIPTION` TEXT NOT NULL COMMENT '설명' COLLATE 'utf8_general_ci',
-	`IN_MATERIAL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '안감소재' COLLATE 'utf8_general_ci',
-	`OUT_MATERIAL` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '외피소재' COLLATE 'utf8_general_ci',
-	`REAL_SIZE_LENGTH` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측길이',
-	`REAL_SIZE_WIDTH` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측너비',
-	`WEIGHT` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '중량',
-	`USED` TINYINT(1) NOT NULL COMMENT '중고여부',
-	`RELEASE_DATE` DATE NULL DEFAULT NULL COMMENT '발매일',
-	`RETRO` TINYINT(1) NOT NULL COMMENT '재발매여부',
-	`WRITER` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '등록자' COLLATE 'utf8_general_ci',
-	`WRITE_TIME` DATETIME NOT NULL COMMENT '등록시간',
-	`UPDATE_TIME` DATETIME NULL DEFAULT NULL COMMENT '수정시간',
-	`SOLDOUT` TINYINT(1) NOT NULL COMMENT '판매완료여부',
-	`DELETE_FL` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '삭제여부',
-	`VIEW_CNT` INT(11) NOT NULL DEFAULT '0' COMMENT '조회수',
-	PRIMARY KEY (`PRODUCT_ID`) USING BTREE,
-	INDEX `product_BRAND_IDX` (`BRAND`, `TYPE`, `SIZE`) USING BTREE
+	`id` INT(11) NOT NULL DEFAULT '0' COMMENT 'idx',
+	`brand` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '브랜드' COLLATE 'utf8_general_ci',
+	`category` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '신발타입' COLLATE 'utf8_general_ci',
+	`model` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '모델명' COLLATE 'utf8_general_ci',
+	`color` VARCHAR(10) NOT NULL DEFAULT '' COMMENT '색상' COLLATE 'utf8_general_ci',
+	`size` SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '사이즈',
+	`price` INT(11) NOT NULL COMMENT '가격',
+	`quantity` INT(11) NOT NULL COMMENT '수량',
+	`collaboration` TINYINT(1) NOT NULL COMMENT '협업여부',
+	`collaboration_brand` VARCHAR(20) NULL DEFAULT '' COMMENT '협업브랜드' COLLATE 'utf8_general_ci',
+	`description` TEXT NOT NULL COMMENT '설명' COLLATE 'utf8_general_ci',
+	`in_material` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '안감소재' COLLATE 'utf8_general_ci',
+	`out_material` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '외피소재' COLLATE 'utf8_general_ci',
+	`real_size_length` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측길이',
+	`real_size_width` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '실측너비',
+	`weight` FLOAT(3,1) NOT NULL DEFAULT '0.0' COMMENT '중량',
+	`used` TINYINT(1) NOT NULL COMMENT '중고여부',
+	`release_date` DATE NULL DEFAULT NULL COMMENT '발매일',
+	`retro` TINYINT(1) NOT NULL COMMENT '재발매여부',
+	`soldout` TINYINT(1) NOT NULL COMMENT '판매완료여부',
+	`member_id` INT(11) NOT NULL DEFAULT '0' COMMENT '등록자',
+	`write_date` DATETIME NOT NULL COMMENT '등록시간',
+	`update_date` DATETIME NULL DEFAULT NULL COMMENT '수정시간',
+	`view_count` INT(11) NOT NULL DEFAULT '0' COMMENT '조회수',
+	`delete_flag` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '삭제여부',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `brand` (`brand`) USING BTREE,
+	INDEX `category` (`category`) USING BTREE
 )
 COMMENT='상품'
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=29
+
+
 
 -->
 
-	<select id="selectAll"  resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE 		DELETE_FL IS false
+	<select id="selectAll"  resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collabortion"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE 		delete_flag IS false
 	</select>
 	
-<!-- 	<select id="selectList" parameterType="Search" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
+<!-- 	<select id="selectList" parametercategory="Search" resultcategory="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
 		<trim prefix="WHERE" prefixOverrides="AND">
 			<if test="brand != null">
-			AND		BRAND = #{brand}			
+			AND		brand = #{brand}			
 			</if>
-			<if test="type != null">
-			AND		TYPE = #{type}			
+			<if test="category != null">
+			AND		category = #{category}			
 			</if>
 			<if test="size != 0">
-			AND		SIZE = #{size}			
+			AND		size = #{size}			
 			</if>
 			<if test="collaboration != null">
-			AND		COLLABORATION IS ${collaboration}			
+			AND		collaboration IS ${collaboration}			
 			</if>
 			<if test="retro != null">
-			AND		RETRO IS ${retro}			
+			AND		retro IS ${retro}			
 			</if>
 			<if test="used != null">
-			AND		USED IS ${used}			
+			AND		used IS ${used}			
 			</if>
 			<if test="soldout != null">
-			AND		SOLDOUT IS ${soldout}			
+			AND		soldout IS ${soldout}			
 			</if>
-			<if test="minPrice != 0 || maxPrice !=0">
-			AND		PRICE BETWEEN #{minPrice} AND #{maxPrice}			
+			<if test="minprice != 0 || maxprice !=0">
+			AND		price BETWEEN #{minprice} AND #{maxprice}			
 			</if>
-			AND		DELETE_FL IS false
+			AND		delete_flag IS false
 		</trim>	
 	</select> -->
 	
- 	<select id="selectList" parameterType="Search"  resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		BRAND = #{brand}
-		AND			TYPE = #{type}
-		AND			SIZE = #{size}
-		AND			COLLABORATION IS ${collaboration}
-		AND			RETRO IS ${retro}
-		AND			USED IS ${used}
-		AND			SOLDOUT IS ${soldout}
+ 	<select id="selectList" parameterType="Search"  resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		brand = #{brand}
+		AND			category = #{category}
+		AND			size = #{size}
+		AND			collaboration IS ${collaboration}
+		AND			retro IS ${retro}
+		AND			used IS ${used}
+		AND			soldout IS ${soldout}
 		<![CDATA[
-		AND 		PRICE >= #{minPrice} 
-		AND 		PRICE <= #{maxPrice}
+		AND 		price >= #{minprice} 
+		AND 		price <= #{maxprice}
 		]]>
-		AND 		DELETE_FL IS false
+		AND 		delete_flag IS false
 	</select>
-	<select id="selectBrand" parameterType="String" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		BRAND = #{brand}
-	</select>
-	
-	<select id="selectType" parameterType="String" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		TYPE = #{type}
-	</select>
-	<select id="selectSize" parameterType="int" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		SIZE = ${size}
+	<select id="selectBrand" parameterType="String" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		brand = #{brand}
 	</select>
 	
-	 <select id="selectCollaboration" parameterType="boolean" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		COLLABORATION = ${collaboration}
+	<select id="selectCategory" parameterType="String" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		category = #{category}
 	</select>
-	<select id="selectRetro" parameterType="boolean" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		RETRO = ${retro}
+	<select id="selectSize" parameterType="int" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		size = ${size}
 	</select>
-	<select id="selectUsed" parameterType="boolean" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		USED = ${used}
+	
+	 <select id="selectCollaboration" parameterType="boolean" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		collaboration = ${collaboration}
 	</select>
-	<select id="selectSoldout" parameterType="boolean" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		SOLDOUT = ${soldout}
+	<select id="selectRetro" parameterType="boolean" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		retro = ${retro}
 	</select>
-	<select id="selectPrice" parameterType="Map" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		PRICE BETWEEN #{minPrice} AND #{maxPrice}
+	<select id="selectUsed" parameterType="boolean" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		used = ${used}
+	</select>
+	<select id="selectSoldout" parameterType="boolean" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		soldout = ${soldout}
+	</select>
+	<select id="selectPrice" parameterType="Map" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		price BETWEEN #{minprice} AND #{maxprice}
 	</select>	
 
 	
 
 		
-	<select id="selectOne" parameterType="int" resultType="Product">
-		SELECT 		PRODUCT_ID
-					,BRAND
-					,if(COLLABORATION,'true','false') as "COLLABORATION"
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,if(USED,'true','false') as "USED"
-					,RELEASE_DATE
-					,if(RETRO,'true','false') as "RETRO"
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,if(SOLDOUT,'true','false') as "SOLDOUT"
-					,VIEW_CNT
-		FROM		PRODUCT
-		WHERE		PRODUCT_ID = #{productId}
+	<select id="selectOne" parameterType="int" resultType="product">
+		SELECT 		id
+					,brand
+					,if(collaboration,'true','false') as "collaboration"
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,if(used,'true','false') as "used"
+					,release_date
+					,if(retro,'true','false') as "retro"
+					,member_id
+					,write_date
+					,update_date
+					,if(soldout,'true','false') as "soldout"
+					,view_count
+		FROM		product
+		WHERE		id = #{id}
 	</select>
 	
-	<insert id="addProduct" parameterType="Product">
-		INSERT INTO PRODUCT 
+	<insert id="addProduct" parameterType="product">
+		INSERT INTO product 
 		(
-					BRAND
-					,COLLABORATION
-					,COLLABORATION_BRAND
-					,TYPE
-					,MODEL
-					,NAME
-					,COLOR
-					,PRICE
-					,SIZE
-					,QUANTITY
-					,DESCRIPTION
-					,IN_MATERIAL
-					,OUT_MATERIAL
-					,REAL_SIZE_LENGTH
-					,REAL_SIZE_WIDTH
-					,WEIGHT
-					,USED
-					,RELEASE_DATE
-					,RETRO
-					,WRITER
-					,WRITE_TIME
-					,UPDATE_TIME
-					,SOLDOUT
-					,VIEW_CNT
+					brand
+					,collaboration
+					,collaboration_brand
+					,category
+					,model
+					,color
+					,price
+					,size
+					,quantity
+					,description
+					,in_material
+					,out_material
+					,real_size_length
+					,real_size_width
+					,weight
+					,used
+					,release_date
+					,retro
+					,member_id
+					,write_date
+					,update_date
+					,soldout
+					,view_count
 		)
 		VALUES 		
 		(
 					#{brand}
 					,#{collaboration}
 					,#{collaborationBrand}
-					,#{type}
+					,#{category}
 					,#{model}
-					,#{name}
 					,#{color}
 					,#{price}
 					,#{size}
@@ -477,65 +464,64 @@ AUTO_INCREMENT=29
 					,#{description}
 					,#{inMaterial}
 					,#{outMaterial}
-					,#{realSizeLength}
-					,#{realSizeWidth}
+					,#{realsizeLength}
+					,#{realsizeWidth}
 					,#{weight}
 					,#{used}
 					,#{releaseDate}
 					,#{retro}
-					,#{writer}
-					,#{writeTime}
-					,#{updateTime}
+					,#{memberId}
+					,#{writeDate}
+					,#{updateDate}
 					,#{soldout}
 					,#{viewCount}
 		)
 	</insert>
 	
-	<update id="updateProduct" parameterType="Product">
-		UPDATE		PRODUCT
+	<update id="updateProduct" parameterType="product">
+		UPDATE		product
 		SET			
-					BRAND := #{brand}
-					,COLLABORATION := #{collaboration}
-					,COLLABORATION_BRAND := #{collaborationBrand}
-					,TYPE := #{type}
-					,MODEL := #{model}
-					,NAME := #{name}
-					,COLOR := #{color}
-					,PRICE := #{price}
-					,SIZE := #{size}
-					,QUANTITY := #{quantity}
-					,DESCRIPTION := #{description}
-					,IN_MATERIAL := #{inMaterial}
-					,OUT_MATERIAL := #{outMaterial}
-					,REAL_SIZE_LENGTH := #{realSizeLength}
-					,REAL_SIZE_WIDTH := #{realSizeWidth}
-					,WEIGHT := #{weight}
-					,USED := #{used}
-					,RELEASE_DATE := #{releaseDate}
-					,RETRO := #{retro}
-					,SOLDOUT := #{soldout}
-					,UPDATE_TIME := #{updateTime}
-		WHERE		PRODUCT_ID = #{productId}
+					brand := #{brand}
+					,collaboration := #{collaboration}
+					,collaboration_brand := #{collaborationBrand}
+					,category := #{category}
+					,model := #{model}
+					,color := #{color}
+					,price := #{price}
+					,size := #{size}
+					,quantity := #{quantity}
+					,description := #{description}
+					,in_material := #{inMaterial}
+					,out_material := #{outMaterial}
+					,real_size_length := #{realSizeLength}
+					,real_size_width := #{realSizeWidth}
+					,weight := #{weight}
+					,used := #{used}
+					,release_date := #{releaseDate}
+					,retro := #{retro}
+					,soldout := #{soldout}
+					,update_date := #{updateTime}
+		WHERE		id = #{id}
 	</update>
 	
-	<update id="deleteProduct" parameterType="Product">
-		UPDATE		PRODUCT
-		SET			DELETE_FL := true
-					,UPDATE_TIME := now()
-		WHERE		PRODUCT_ID=#{productId}
+	<update id="deleteProduct" parameterType="product">
+		UPDATE		product
+		SET			delete_flag := true
+					,update_date := now()
+		WHERE		id=#{id}
 	</update>
 	
 	<delete id="delete" parameterType="int">
 		DELETE 
-		FROM 		PRODUCT
-		WHERE		PRODUCT_ID=#{productId}
+		FROM 		product
+		WHERE		id=#{id}
 	</delete>
 	
 	
 	<update id="viewCount" parameterType="int">
-		UPDATE 		PRODUCT
-		SET			VIEW_CNT := VIEW_CNT + 1
-		WHERE		PRODUCT_ID = #{productId}
+		UPDATE 		product
+		SET			view_count := view_count + 1
+		WHERE		id = #{id}
 	</update>
 	
 	
