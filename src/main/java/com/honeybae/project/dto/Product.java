@@ -24,7 +24,7 @@ public class Product {
 	private boolean used;
 	private String releaseDate;
 	private boolean retro;
-	private int member_id;
+	private int memberId;
 	private String writeDate;
 	private String updateDate;
 	private boolean soldout;
@@ -32,11 +32,13 @@ public class Product {
 	
 	public Product() {
 	}
+	
+	
 
 	public Product(int id, String brand, boolean collaboration, String collaborationBrand, String category,
 			String model, String name, String color, int price, int size, int quantity, String description,
 			String inMaterial, String outMaterial, float realSizeLength, float realSizeWidth, float weight,
-			boolean used, String releaseDate, boolean retro, int member_id, String writeDate, String updateDate,
+			boolean used, String releaseDate, boolean retro, int memberId, String writeDate, String updateDate,
 			boolean soldout, int viewCount) {
 		super();
 		this.id = id;
@@ -59,12 +61,13 @@ public class Product {
 		this.used = used;
 		this.releaseDate = releaseDate;
 		this.retro = retro;
-		this.member_id = member_id;
+		this.memberId = memberId;
 		this.writeDate = writeDate;
 		this.updateDate = updateDate;
 		this.soldout = soldout;
 		this.viewCount = viewCount;
 	}
+
 
 	public int getId() {
 		return id;
@@ -226,12 +229,12 @@ public class Product {
 		this.retro = retro;
 	}
 
-	public int getMember_id() {
-		return member_id;
+	public int getMemberId() {
+		return memberId;
 	}
 
-	public void setMember_id(int member_id) {
-		this.member_id = member_id;
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getWriteDate() {
@@ -288,9 +291,11 @@ public class Product {
 				+ color + ", price=" + price + ", size=" + size + ", quantity=" + quantity + ", description="
 				+ description + ", inMaterial=" + inMaterial + ", outMaterial=" + outMaterial + ", realSizeLength="
 				+ realSizeLength + ", realSizeWidth=" + realSizeWidth + ", weight=" + weight + ", used=" + used
-				+ ", releaseDate=" + releaseDate + ", retro=" + retro + ", member_id=" + member_id + ", writeDate="
+				+ ", releaseDate=" + releaseDate + ", retro=" + retro + ", memberId=" + memberId + ", writeDate="
 				+ writeDate + ", updateDate=" + updateDate + ", soldout=" + soldout + ", viewCount=" + viewCount + "]";
 	}
+
+	
 
 	
 
