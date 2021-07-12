@@ -27,9 +27,8 @@ ENGINE=InnoDB
 
 -->
 
-	<select id="checkById" parameterType="String" resultType="Member">
-		SELECT		id
-					,email
+	<select id="checkByEmail" parameterType="String" resultType="Member">
+		SELECT		email
 		FROM		member
 		WHERE		email = #{email}
 	</select>
@@ -62,6 +61,29 @@ ENGINE=InnoDB
 					,#{deleteFlag}
 		)
 	</insert>
+	
+	<select id="checkByPassword" parameterType="String" resultType="String">
+		SELECT 		password
+		FROM		member
+		WHERE		email = #{email}
+	</select>
+	
+	<select id="getUserInfo" parameterType="String" resultType="SessionVO">
+		SELECT 
+					id
+					,email
+					,name
+					,nick_name
+					,role
+		FROM		member
+		WHERE		email = #{email}
+	</select>
+	
+	<update id="resignMember" parameterType="Member">
+		UPDATE		member
+		SET			delete_flag:=#{deleteFlag}
+		WHERE		email = #{email}
+	</update>
 
 
 
