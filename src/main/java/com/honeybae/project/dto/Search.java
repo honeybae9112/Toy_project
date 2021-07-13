@@ -1,11 +1,10 @@
 package com.honeybae.project.dto;
 
-public class Search {
+public class Search extends Pagination{
 	 private int minPrice;
 	 private int maxPrice;
-	 
 	 private String brand;
-	 private String type;
+	 private String category;
 	 private int	size;
 	 private Boolean collaboration;
 	 private Boolean retro;
@@ -15,13 +14,12 @@ public class Search {
 	public Search() {
 	}
 
-	public Search(int minPrice, int maxPrice, String brand, String type, int size, Boolean collaboration, Boolean retro,
-			Boolean used, Boolean soldout) {
-		super();
+	public Search(int minPrice, int maxPrice, String brand, String category, int size, Boolean collaboration,
+			Boolean retro, Boolean used, Boolean soldout) {
 		this.minPrice = minPrice;
 		this.maxPrice = maxPrice;
 		this.brand = brand;
-		this.type = type;
+		this.category = category;
 		this.size = size;
 		this.collaboration = collaboration;
 		this.retro = retro;
@@ -53,12 +51,12 @@ public class Search {
 		this.brand = brand;
 	}
 
-	public String getType() {
-		return type;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public int getSize() {
@@ -100,24 +98,13 @@ public class Search {
 	public void setSoldout(Boolean soldout) {
 		this.soldout = soldout;
 	}
-
-	
-	
-	
-	 
 	
 
+	@Override
+	public String toString() {
+		return "Search [minPrice=" + minPrice + ", maxPrice=" + maxPrice + ", brand=" + brand + ", category=" + category
+				+ ", size=" + size + ", collaboration=" + collaboration + ", retro=" + retro + ", used=" + used
+				+ ", soldout=" + soldout + "]";
+	}
 
-	
-
-	
-	
-	
-
-
-
-
-	 
-	 
-	 
 }

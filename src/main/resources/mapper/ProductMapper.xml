@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.honeybae.project.mapper.productMapper">
+<mapper namespace="com.honeybae.project.mapper.ProductMapper">
 <!--  
 CREATE TABLE `product` (
 	`id` INT(11) NOT NULL DEFAULT '0' COMMENT 'idx',
@@ -40,11 +40,10 @@ ENGINE=InnoDB
 
 
 -->
-
-	<select id="selectAll"  resultType="product">
+	<select id="selectAll"  parameterType="Pagination" resultType="Product">
 		SELECT 		id
 					,brand
-					,if(collaboration,'true','false') as "collabortion"
+					,if(collaboration,'true','false') as "collaboration"
 					,collaboration_brand
 					,category
 					,model
@@ -68,9 +67,10 @@ ENGINE=InnoDB
 					,view_count
 		FROM		product
 		WHERE 		delete_flag IS false
+		LIMIT		#{startPage},#{pageRowSize}
 	</select>
 	
-<!-- 	<select id="selectList" parametercategory="Search" resultcategory="product">
+ 	<select id="selectList" parameterType="Search" resultType="Product">
 		SELECT 		id
 					,brand
 					,if(collaboration,'true','false') as "collaboration"
@@ -118,283 +118,15 @@ ENGINE=InnoDB
 			<if test="soldout != null">
 			AND		soldout IS ${soldout}			
 			</if>
-			<if test="minprice != 0 || maxprice !=0">
-			AND		price BETWEEN #{minprice} AND #{maxprice}			
+			<if test="minPrice != 0 || maxPrice !=0">
+			AND		price BETWEEN #{minPrice} AND #{maxPrice}			
 			</if>
 			AND		delete_flag IS false
 		</trim>	
-	</select> -->
-	
- 	<select id="selectList" parameterType="Search"  resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		brand = #{brand}
-		AND			category = #{category}
-		AND			size = #{size}
-		AND			collaboration IS ${collaboration}
-		AND			retro IS ${retro}
-		AND			used IS ${used}
-		AND			soldout IS ${soldout}
-		<![CDATA[
-		AND 		price >= #{minprice} 
-		AND 		price <= #{maxprice}
-		]]>
-		AND 		delete_flag IS false
+		LIMIT		#{startPage},#{pageRowSize}
 	</select>
-	<select id="selectBrand" parameterType="String" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		brand = #{brand}
-	</select>
-	
-	<select id="selectCategory" parameterType="String" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		category = #{category}
-	</select>
-	<select id="selectSize" parameterType="int" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		size = ${size}
-	</select>
-	
-	 <select id="selectCollaboration" parameterType="boolean" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		collaboration = ${collaboration}
-	</select>
-	<select id="selectRetro" parameterType="boolean" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		retro = ${retro}
-	</select>
-	<select id="selectUsed" parameterType="boolean" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		used = ${used}
-	</select>
-	<select id="selectSoldout" parameterType="boolean" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		soldout = ${soldout}
-	</select>
-	<select id="selectPrice" parameterType="Map" resultType="product">
-		SELECT 		id
-					,brand
-					,if(collaboration,'true','false') as "collaboration"
-					,collaboration_brand
-					,category
-					,model
-					,color
-					,price
-					,size
-					,quantity
-					,description
-					,in_material
-					,out_material
-					,real_size_length
-					,real_size_width
-					,weight
-					,if(used,'true','false') as "used"
-					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
-					,view_count
-		FROM		product
-		WHERE		price BETWEEN #{minprice} AND #{maxprice}
-	</select>	
-
-	
-
 		
-	<select id="selectOne" parameterType="int" resultType="product">
+	<select id="selectOne" parameterType="int" resultType="Product">
 		SELECT 		id
 					,brand
 					,if(collaboration,'true','false') as "collaboration"
@@ -423,7 +155,7 @@ ENGINE=InnoDB
 		WHERE		id = #{id}
 	</select>
 	
-	<insert id="addProduct" parameterType="product">
+	<insert id="addProduct" parameterType="Product">
 		INSERT INTO product 
 		(
 					brand
@@ -464,8 +196,8 @@ ENGINE=InnoDB
 					,#{description}
 					,#{inMaterial}
 					,#{outMaterial}
-					,#{realsizeLength}
-					,#{realsizeWidth}
+					,#{realSizeLength}
+					,#{realSizeWidth}
 					,#{weight}
 					,#{used}
 					,#{releaseDate}
@@ -478,7 +210,7 @@ ENGINE=InnoDB
 		)
 	</insert>
 	
-	<update id="updateProduct" parameterType="product">
+	<update id="updateProduct" parameterType="Product">
 		UPDATE		product
 		SET			
 					brand := #{brand}
@@ -500,11 +232,11 @@ ENGINE=InnoDB
 					,release_date := #{releaseDate}
 					,retro := #{retro}
 					,soldout := #{soldout}
-					,update_date := #{updateTime}
+					,update_date := #{updateDate}
 		WHERE		id = #{id}
 	</update>
 	
-	<update id="deleteProduct" parameterType="product">
+	<update id="deleteProduct" parameterType="Product">
 		UPDATE		product
 		SET			delete_flag := true
 					,update_date := now()
