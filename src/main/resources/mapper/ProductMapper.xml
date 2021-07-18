@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.honeybae.project.mapper.ProductMapper">
-<!--  
+<!--
 CREATE TABLE `product` (
-	`id` INT(11) NOT NULL DEFAULT '0' COMMENT 'idx',
+CREATE TABLE `product` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'idx',
 	`brand` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '브랜드' COLLATE 'utf8_general_ci',
 	`category` VARCHAR(50) NOT NULL DEFAULT '0' COMMENT '신발타입' COLLATE 'utf8_general_ci',
 	`model` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '모델명' COLLATE 'utf8_general_ci',
@@ -23,27 +23,55 @@ CREATE TABLE `product` (
 	`used` TINYINT(1) NOT NULL COMMENT '중고여부',
 	`release_date` DATE NULL DEFAULT NULL COMMENT '발매일',
 	`retro` TINYINT(1) NOT NULL COMMENT '재발매여부',
-	`soldout` TINYINT(1) NOT NULL COMMENT '판매완료여부',
-	`member_id` INT(11) NOT NULL DEFAULT '0' COMMENT '등록자',
-	`write_date` DATETIME NOT NULL COMMENT '등록시간',
-	`update_date` DATETIME NULL DEFAULT NULL COMMENT '수정시간',
+	`sell_status` TINYINT(1) NOT NULL COMMENT '판매 상태 (0:판매중1:거래중 2: 판매완료)',
+	`writer_id` INT(11) NOT NULL COMMENT '등록자',
+	`writed_date` DATETIME NOT NULL COMMENT '등록시간',
+	`modifier_id` INT(11) NULL DEFAULT NULL COMMENT '수정자',
+	`modified_date` DATETIME NULL DEFAULT NULL COMMENT '수정시간',
 	`view_count` INT(11) NOT NULL DEFAULT '0' COMMENT '조회수',
 	`delete_flag` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '삭제여부',
 	PRIMARY KEY (`id`) USING BTREE,
-	INDEX `brand` (`brand`) USING BTREE,
-	INDEX `category` (`category`) USING BTREE
+	INDEX `FK_product_category` (`category`) USING BTREE,
+	INDEX `FK_product_member` (`writer_id`) USING BTREE,
+	INDEX `FK_product_brand` (`brand`) USING BTREE,
+	CONSTRAINT `FK_product_writer_id_member_id` FOREIGN KEY (`writer_id`) REFERENCES `jhbae`.`member` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT
 )
 COMMENT='상품'
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 
-
-
 -->
-	<select id="selectAll"  parameterType="Pagination" resultType="Product">
+	<resultMap type="com.honeybae.project.dto.Product" id="Product">
+		<result property="id" column="id"/>
+		<result property="brand" column="brand"/>
+		<result property="collaboration" column="collaboration"/>
+		<result property="collaborationBrand" column="collaboration_brand"/>
+		<result property="category" column="category"/>
+		<result property="model" column="model"/>
+		<result property="color" column="color"/>
+		<result property="price" column="price"/>
+		<result property="size" column="size"/>
+		<result property="quantity" column="quantity"/>
+		<result property="description" column="description"/>
+		<result property="inMaterial" column="in_material"/>
+		<result property="outMaterial" column="out_material"/>
+		<result property="realSizeLength" column="real_size_length"/>
+		<result property="realSizeWidth" column="real_size_width"/>
+		<result property="weight" column="weight"/>
+		<result property="used" column="used"/>
+		<result property="releaseDate" column="release_date"/>
+		<result property="retro" column="retro"/>
+		<result property="writerId" column="writer_id"/>
+		<result property="writedDate" column="writed_date"/>
+		<result property="modifierId" column="modifier_id"/>
+		<result property="modifiedDate" column="modified_date"/>
+		<result property="sellStatus" column="sell_status"/>
+		<result property="viewCount" column="view_count"/>
+	</resultMap>
+	<select id="selectAll"  parameterType="Pagination" resultMap="Product">
 		SELECT 		id
 					,brand
-					,if(collaboration,'true','false') as "collaboration"
+					,collaboration
 					,collaboration_brand
 					,category
 					,model
@@ -57,23 +85,24 @@ ENGINE=InnoDB
 					,real_size_length
 					,real_size_width
 					,weight
-					,if(used,'true','false') as "used"
+					,used
 					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
+					,retro
+					,writer_id
+					,writed_date
+					,modifier_id
+					,modified_date
+					,sell_status
 					,view_count
 		FROM		product
-		WHERE 		delete_flag IS false
+		WHERE 		delete_flag = false
 		LIMIT		#{startPage},#{pageRowSize}
 	</select>
-	
- 	<select id="selectList" parameterType="Search" resultType="Product">
+
+ 	<select id="selectList" parameterType="Search" resultMap="Product">
 		SELECT 		id
 					,brand
-					,if(collaboration,'true','false') as "collaboration"
+					,collaboration
 					,collaboration_brand
 					,category
 					,model
@@ -87,49 +116,54 @@ ENGINE=InnoDB
 					,real_size_length
 					,real_size_width
 					,weight
-					,if(used,'true','false') as "used"
+					,used
 					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
+					,retro
+					,writer_id
+					,writed_date
+					,modifier_id
+					,modified_date
+					,sell_status
 					,view_count
 		FROM		product
 		<trim prefix="WHERE" prefixOverrides="AND">
 			<if test="brand != null">
-			AND		brand = #{brand}			
+			AND		brand = #{brand}
 			</if>
 			<if test="category != null">
-			AND		category = #{category}			
+			AND		category = #{category}
 			</if>
 			<if test="size != 0">
-			AND		size = #{size}			
+			AND		size = #{size}
 			</if>
 			<if test="collaboration != null">
-			AND		collaboration IS ${collaboration}			
+			AND		collaboration = #{collaboration}
 			</if>
 			<if test="retro != null">
-			AND		retro IS ${retro}			
+			AND		retro = #{retro}
 			</if>
 			<if test="used != null">
-			AND		used IS ${used}			
+			AND		used = #{used}
 			</if>
-			<if test="soldout != null">
-			AND		soldout IS ${soldout}			
+			<if test="sell_status != null">
+			AND		sell_status = #{sellStatus}
 			</if>
-			<if test="minPrice != 0 || maxPrice !=0">
-			AND		price BETWEEN #{minPrice} AND #{maxPrice}			
+			<!-- AND		price BETWEEN #{minPrice} AND #{maxPrice} -->
+			<if test="minPrice != null">
+			AND		price <![CDATA[ >= ]]> #{minPrice}
 			</if>
-			AND		delete_flag IS false
-		</trim>	
+			<if test="maxPrice !=null AND  maxPrice !=0">
+			AND 	price <![CDATA[ <= ]]> #{maxPrice}
+			</if>
+			AND		delete_flag = false
+		</trim>
 		LIMIT		#{startPage},#{pageRowSize}
 	</select>
-		
-	<select id="selectOne" parameterType="int" resultType="Product">
+
+	<select id="selectOne" parameterType="int" resultMap="Product">
 		SELECT 		id
 					,brand
-					,if(collaboration,'true','false') as "collaboration"
+					,collaboration
 					,collaboration_brand
 					,category
 					,model
@@ -143,20 +177,21 @@ ENGINE=InnoDB
 					,real_size_length
 					,real_size_width
 					,weight
-					,if(used,'true','false') as "used"
+					,used
 					,release_date
-					,if(retro,'true','false') as "retro"
-					,member_id
-					,write_date
-					,update_date
-					,if(soldout,'true','false') as "soldout"
+					,retro
+					,writer_id
+					,writed_date
+					,modifier_id
+					,modified_date
+					,sell_status
 					,view_count
 		FROM		product
 		WHERE		id = #{id}
 	</select>
-	
+
 	<insert id="addProduct" parameterType="Product">
-		INSERT INTO product 
+		INSERT INTO product
 		(
 					brand
 					,collaboration
@@ -176,13 +211,14 @@ ENGINE=InnoDB
 					,used
 					,release_date
 					,retro
-					,member_id
-					,write_date
-					,update_date
-					,soldout
+					,writer_id
+					,writed_date
+					,modifier_id
+					,modified_date
+					,sell_status
 					,view_count
 		)
-		VALUES 		
+		VALUES
 		(
 					#{brand}
 					,#{collaboration}
@@ -202,61 +238,63 @@ ENGINE=InnoDB
 					,#{used}
 					,#{releaseDate}
 					,#{retro}
-					,#{memberId}
-					,#{writeDate}
-					,#{updateDate}
-					,#{soldout}
+					,#{writerId}
+					,#{writedDate}
+					,#{modifierId}
+					,#{modifiedDate}
+					,#{sellStatus}
 					,#{viewCount}
 		)
 	</insert>
-	
+
 	<update id="updateProduct" parameterType="Product">
 		UPDATE		product
-		SET			
-					brand := #{brand}
-					,collaboration := #{collaboration}
-					,collaboration_brand := #{collaborationBrand}
-					,category := #{category}
-					,model := #{model}
-					,color := #{color}
-					,price := #{price}
-					,size := #{size}
-					,quantity := #{quantity}
-					,description := #{description}
-					,in_material := #{inMaterial}
-					,out_material := #{outMaterial}
-					,real_size_length := #{realSizeLength}
-					,real_size_width := #{realSizeWidth}
-					,weight := #{weight}
-					,used := #{used}
-					,release_date := #{releaseDate}
-					,retro := #{retro}
-					,soldout := #{soldout}
-					,update_date := #{updateDate}
+		SET
+					brand = #{brand}
+					,collaboration = #{collaboration}
+					,collaboration_brand = #{collaborationBrand}
+					,category = #{category}
+					,model = #{model}
+					,color = #{color}
+					,price = #{price}
+					,size = #{size}
+					,quantity = #{quantity}
+					,description = #{description}
+					,in_material = #{inMaterial}
+					,out_material = #{outMaterial}
+					,real_size_length = #{realSizeLength}
+					,real_size_width = #{realSizeWidth}
+					,weight = #{weight}
+					,used = #{used}
+					,release_date = #{releaseDate}
+					,retro = #{retro}
+					,modifier_id = #{modifierId}
+					,modified_date = #{updateDate}
 		WHERE		id = #{id}
 	</update>
-	
+
 	<update id="deleteProduct" parameterType="Product">
 		UPDATE		product
-		SET			delete_flag := true
-					,update_date := now()
-		WHERE		id=#{id}
-	</update>
-	
-	<delete id="delete" parameterType="int">
-		DELETE 
-		FROM 		product
-		WHERE		id=#{id}
-	</delete>
-	
-	
-	<update id="viewCount" parameterType="int">
-		UPDATE 		product
-		SET			view_count := view_count + 1
+		SET			delete_flag = true
+					,modifier_id = #{modifierId}
+					,modified_date = #{updateDate}
 		WHERE		id = #{id}
 	</update>
-	
-	
+
+	<delete id="delete" parameterType="int">
+		DELETE
+		FROM 		product
+		WHERE		id = #{id}
+	</delete>
+
+
+	<update id="viewCount" parameterType="int">
+		UPDATE 		product
+		SET			view_count = view_count + 1
+		WHERE		id = #{id}
+	</update>
+
+
 
 
 

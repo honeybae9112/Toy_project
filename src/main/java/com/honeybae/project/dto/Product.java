@@ -3,16 +3,15 @@ package com.honeybae.project.dto;
 import java.util.Objects;
 
 public class Product {
-	
+
 	private int id;
 	private String brand;
-	private boolean collaboration;
+	private Boolean collaboration;
 	private String collaborationBrand;
 	private String category;
 	private String model;
-	private String name;
 	private String color;
-	private int price;
+	private Integer price;
 	private int size;
 	private int quantity;
 	private String description;
@@ -21,25 +20,24 @@ public class Product {
 	private float realSizeLength;
 	private float realSizeWidth;
 	private float weight;
-	private boolean used;
+	private Boolean used;
 	private String releaseDate;
-	private boolean retro;
-	private int memberId;
-	private String writeDate;
-	private String updateDate;
-	private boolean soldout;
+	private Boolean retro;
+	private int writerId;
+	private String writedDate;
+	private int modifierId;
+	private String modifiedDate;
+	private int sellStatus;
 	private int viewCount;
-	
+
 	public Product() {
 	}
-	
-	
 
-	public Product(int id, String brand, boolean collaboration, String collaborationBrand, String category,
-			String model, String name, String color, int price, int size, int quantity, String description,
-			String inMaterial, String outMaterial, float realSizeLength, float realSizeWidth, float weight,
-			boolean used, String releaseDate, boolean retro, int memberId, String writeDate, String updateDate,
-			boolean soldout, int viewCount) {
+	public Product(int id, String brand, Boolean collaboration, String collaborationBrand, String category,
+			String model, String color, Integer price, int size, int quantity, String description, String inMaterial,
+			String outMaterial, float realSizeLength, float realSizeWidth, float weight, Boolean used,
+			String releaseDate, Boolean retro, int writerId, String writedDate, int modifierId, String modifiedDate,
+			int sellStatus, int viewCount) {
 		super();
 		this.id = id;
 		this.brand = brand;
@@ -47,7 +45,6 @@ public class Product {
 		this.collaborationBrand = collaborationBrand;
 		this.category = category;
 		this.model = model;
-		this.name = name;
 		this.color = color;
 		this.price = price;
 		this.size = size;
@@ -61,13 +58,13 @@ public class Product {
 		this.used = used;
 		this.releaseDate = releaseDate;
 		this.retro = retro;
-		this.memberId = memberId;
-		this.writeDate = writeDate;
-		this.updateDate = updateDate;
-		this.soldout = soldout;
+		this.writerId = writerId;
+		this.writedDate = writedDate;
+		this.modifierId = modifierId;
+		this.modifiedDate = modifiedDate;
+		this.sellStatus = sellStatus;
 		this.viewCount = viewCount;
 	}
-
 
 	public int getId() {
 		return id;
@@ -85,11 +82,11 @@ public class Product {
 		this.brand = brand;
 	}
 
-	public boolean isCollaboration() {
+	public Boolean getCollaboration() {
 		return collaboration;
 	}
 
-	public void setCollaboration(boolean collaboration) {
+	public void setCollaboration(Boolean collaboration) {
 		this.collaboration = collaboration;
 	}
 
@@ -117,14 +114,6 @@ public class Product {
 		this.model = model;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getColor() {
 		return color;
 	}
@@ -133,11 +122,11 @@ public class Product {
 		this.color = color;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
@@ -205,11 +194,11 @@ public class Product {
 		this.weight = weight;
 	}
 
-	public boolean isUsed() {
+	public Boolean getUsed() {
 		return used;
 	}
 
-	public void setUsed(boolean used) {
+	public void setUsed(Boolean used) {
 		this.used = used;
 	}
 
@@ -221,44 +210,52 @@ public class Product {
 		this.releaseDate = releaseDate;
 	}
 
-	public boolean isRetro() {
+	public Boolean getRetro() {
 		return retro;
 	}
 
-	public void setRetro(boolean retro) {
+	public void setRetro(Boolean retro) {
 		this.retro = retro;
 	}
 
-	public int getMemberId() {
-		return memberId;
+	public int getWriterId() {
+		return writerId;
 	}
 
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
+	public void setWriterId(int writerId) {
+		this.writerId = writerId;
 	}
 
-	public String getWriteDate() {
-		return writeDate;
+	public String getWritedDate() {
+		return writedDate;
 	}
 
-	public void setWriteDate(String writeDate) {
-		this.writeDate = writeDate;
+	public void setWritedDate(String writedDate) {
+		this.writedDate = writedDate;
 	}
 
-	public String getUpdateDate() {
-		return updateDate;
+	public int getModifierId() {
+		return modifierId;
 	}
 
-	public void setUpdateDate(String updateDate) {
-		this.updateDate = updateDate;
+	public void setModifierId(int modifierId) {
+		this.modifierId = modifierId;
 	}
 
-	public boolean isSoldout() {
-		return soldout;
+	public String getModifiedDate() {
+		return modifiedDate;
 	}
 
-	public void setSoldout(boolean soldout) {
-		this.soldout = soldout;
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public int getSellStatus() {
+		return sellStatus;
+	}
+
+	public void setSellStatus(int sellStatus) {
+		this.sellStatus = sellStatus;
 	}
 
 	public int getViewCount() {
@@ -287,16 +284,14 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", brand=" + brand + ", collaboration=" + collaboration + ", collaborationBrand="
-				+ collaborationBrand + ", category=" + category + ", model=" + model + ", name=" + name + ", color="
-				+ color + ", price=" + price + ", size=" + size + ", quantity=" + quantity + ", description="
-				+ description + ", inMaterial=" + inMaterial + ", outMaterial=" + outMaterial + ", realSizeLength="
-				+ realSizeLength + ", realSizeWidth=" + realSizeWidth + ", weight=" + weight + ", used=" + used
-				+ ", releaseDate=" + releaseDate + ", retro=" + retro + ", memberId=" + memberId + ", writeDate="
-				+ writeDate + ", updateDate=" + updateDate + ", soldout=" + soldout + ", viewCount=" + viewCount + "]";
+				+ collaborationBrand + ", category=" + category + ", model=" + model + ", color=" + color + ", price="
+				+ price + ", size=" + size + ", quantity=" + quantity + ", description=" + description + ", inMaterial="
+				+ inMaterial + ", outMaterial=" + outMaterial + ", realSizeLength=" + realSizeLength
+				+ ", realSizeWidth=" + realSizeWidth + ", weight=" + weight + ", used=" + used + ", releaseDate="
+				+ releaseDate + ", retro=" + retro + ", writerId=" + writerId + ", writedDate=" + writedDate
+				+ ", modifierId=" + modifierId + ", modifiedDate=" + modifiedDate + ", sellStatus=" + sellStatus
+				+ ", viewCount=" + viewCount + "]";
 	}
 
-	
-
-	
 
 }

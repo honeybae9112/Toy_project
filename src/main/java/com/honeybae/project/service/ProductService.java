@@ -18,25 +18,25 @@ public class ProductService  {
 	ProductMapper productMapper;
 
 	public List<Product> selectList(Search searchDto) throws Exception {
-		int minPrice = searchDto.getMinPrice();
-		int maxPrice = searchDto.getMaxPrice();
+		Integer minPrice = searchDto.getMinPrice();
+		Integer maxPrice = searchDto.getMaxPrice();
 		String brand = searchDto.getBrand();
 		String category = searchDto.getCategory();
 		int size = searchDto.getSize();
 		Boolean collaboration= searchDto.getCollaboration();
 		Boolean retro=searchDto.getRetro();
 		Boolean used=searchDto.getUsed();
-		Boolean soldout=searchDto.getSoldout();
-		
+		Integer sellStatus=searchDto.getSellStatus();
+
 		if( brand == null
 				&& category == null
 				&& size ==0
 				&& collaboration == null
 				&& retro == null
 				&& used == null
-				&& soldout == null
-				&& minPrice ==0
-				&& maxPrice ==0) {
+				&& sellStatus == null
+				&& minPrice == null
+				&& maxPrice == null) {
 			Pagination pagination = new Pagination();
 			pagination.setCurrentPage(searchDto.getCurrentPage());
 			pagination.setPageRowSize(searchDto.getPageRowSize());
@@ -54,20 +54,24 @@ public class ProductService  {
 
 	public void addProduct(Product dto) throws Exception {
 		Date time = new Date();
-		dto.setWriteDate(TimeUtil.get(time));
-		dto.setUpdateDate(TimeUtil.get(time));
+		dto.setWritedDate(TimeUtil.get(time));
+		dto.setModifiedDate(TimeUtil.get(time));
 		productMapper.addProduct(dto);
 	}
 
-	public void deleteProduct(int productId) throws Exception {
-		productMapper.deleteProduct(productId);
+	public void deleteProduct(int productId,int memberId) throws Exception {
+		Product dto = new Product();
+		dto.setId(productId);
+		dto.setModifierId(memberId);
+		dto.setModifiedDate(TimeUtil.get(new Date()));
+		productMapper.deleteProduct(dto);
 	}
 
 	public void updateProduct(int productId,Product dto) throws Exception {
 		dto.setId(productId);
-		dto.setUpdateDate(TimeUtil.get(new Date()));
+		dto.setModifiedDate(TimeUtil.get(new Date()));
 		productMapper.updateProduct(dto);
 	}
-	
-	
+
+
 }

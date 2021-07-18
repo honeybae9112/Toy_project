@@ -12,17 +12,19 @@ import com.honeybae.project.dto.Search;
 @Repository
 @Mapper
 public interface ProductMapper {
-	
+
 	public List<Product> selectAll(Pagination pagination)throws Exception;
 	public List<Product> selectList(Search searchDto)throws Exception;
 	public Product selectOne(int productId)throws Exception;
 	public void addProduct(Product productDto)throws Exception;
 	public void updateProduct(Product productDto)throws Exception;
-	public void deleteProduct(int productId)throws Exception;
+	public void deleteProduct(Product productDto)throws Exception;
 	public void delete(int productId)throws Exception;
 	public void viewCount(int productId)throws Exception;
-	
-	
+
+
+
+
 	public List<Product> selectBrand(String brand)throws Exception;
 	public List<Product> selectCategory(String category)throws Exception;
 	public List<Product> selectSize(int size)throws Exception;

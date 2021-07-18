@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +18,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.honeybae.project.dto.Member;
 import com.honeybae.project.dto.Product;
 import com.honeybae.project.dto.Search;
 import com.honeybae.project.service.ProductService;
 @RestController
 public class ProductionController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	ProductService productService;
-	
-	// 표출갯수 지정
+
 	@GetMapping(value="/product")
 	public Map<String,Object> list(Search dto)throws Exception {
 		logger.debug("productList");
-		System.out.println(dto.toString());
 		List<Product> list = productService.selectList(dto);
 		Map<String,Object> respData = new LinkedHashMap<>();
 		respData.put("status", "success");
@@ -48,9 +49,9 @@ public class ProductionController {
 		respData.put("data", data);
 		return respData;
 	}
-	
+
 	// 추가해야할 항목
-	// 필수값 검사 
+	// 필수값 검사
 	// 리턴값 처리 ?
 	@PostMapping(value="/product")
 	public Map<String,Object> create(@RequestBody Product dto)throws Exception{
@@ -70,12 +71,16 @@ public class ProductionController {
 		return respData;
 	}
 	@DeleteMapping(value="/product/{productId}")
-	public Map<String,String> delete(@PathVariable("productId")int productId)throws Exception{
+	public Map<String,String> delete(@PathVariable("productId")int productId,
+										HttpServletRequest req
+										)throws Exception{
 		logger.debug("productDelete");
-		productService.deleteProduct(productId);
+		// 추후 세션
+		Member userInfo = (Member)req.getAttribute("userInfo");
+		productService.deleteProduct(productId,userInfo.getId());
 		Map<String,String> respData = new HashMap<String,String>();
 		respData.put("status", "success");
 		return respData;
 	}
-	
+
 }
