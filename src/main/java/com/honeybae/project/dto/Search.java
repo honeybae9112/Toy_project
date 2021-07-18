@@ -1,21 +1,21 @@
 package com.honeybae.project.dto;
 
 public class Search extends Pagination{
-	 private int minPrice;
-	 private int maxPrice;
+	 private Integer minPrice;
+	 private Integer maxPrice;
 	 private String brand;
 	 private String category;
 	 private int	size;
 	 private Boolean collaboration;
 	 private Boolean retro;
 	 private Boolean used;
-	 private Boolean soldout;
-	 
+	 private Integer sellStatus;
+
 	public Search() {
 	}
 
-	public Search(int minPrice, int maxPrice, String brand, String category, int size, Boolean collaboration,
-			Boolean retro, Boolean used, Boolean soldout) {
+	public Search(Integer minPrice, Integer maxPrice, String brand, String category, int size, Boolean collaboration,
+			Boolean retro, Boolean used, Integer sellStatus) {
 		this.minPrice = minPrice;
 		this.maxPrice = maxPrice;
 		this.brand = brand;
@@ -24,22 +24,22 @@ public class Search extends Pagination{
 		this.collaboration = collaboration;
 		this.retro = retro;
 		this.used = used;
-		this.soldout = soldout;
+		this.sellStatus = sellStatus;
 	}
 
-	public int getMinPrice() {
+	public Integer getMinPrice() {
 		return minPrice;
 	}
 
-	public void setMinPrice(int minPrice) {
+	public void setMinPrice(Integer minPrice) {
 		this.minPrice = minPrice;
 	}
 
-	public int getMaxPrice() {
+	public Integer getMaxPrice() {
 		return maxPrice;
 	}
 
-	public void setMaxPrice(int maxPrice) {
+	public void setMaxPrice(Integer maxPrice) {
 		this.maxPrice = maxPrice;
 	}
 
@@ -91,20 +91,20 @@ public class Search extends Pagination{
 		this.used = used;
 	}
 
-	public Boolean getSoldout() {
-		return soldout;
+	public Integer getSellStatus() {
+		return sellStatus;
 	}
 
-	public void setSoldout(Boolean soldout) {
-		this.soldout = soldout;
+	public void setSellStatus(Integer sellStatus) {
+		this.sellStatus = sellStatus;
 	}
-	
+
 
 	@Override
 	public String toString() {
 		return "Search [minPrice=" + minPrice + ", maxPrice=" + maxPrice + ", brand=" + brand + ", category=" + category
 				+ ", size=" + size + ", collaboration=" + collaboration + ", retro=" + retro + ", used=" + used
-				+ ", soldout=" + soldout + "]";
+				+ ", sellStatus=" + sellStatus + "]";
 	}
 
 }
