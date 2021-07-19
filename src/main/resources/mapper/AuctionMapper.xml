@@ -68,6 +68,11 @@ ENGINE=InnoDB
 	 				,#{auctionState}
 	 	)
 	</insert>
-	
+
+	<update id="updateByPrice" parameterType="Auction">
+		UPDATE 		auction
+		SET			current_price = #{currentPrice}
+		WHERE		id = #{id}
+	</update>
 
 </mapper>

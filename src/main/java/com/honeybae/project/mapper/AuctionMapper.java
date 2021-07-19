@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.honeybae.project.dto.Auction;
+import com.honeybae.project.dto.Bidd;
 
 @Repository
 @Mapper
@@ -14,4 +15,5 @@ public interface AuctionMapper {
 	public List<Auction> selectByList()throws Exception;
 	public Auction selectByOne(int auctionId)throws Exception;
 	public void	insert(Auction dto)throws Exception;
+	public void updateByPrice(Auction dto);
 }

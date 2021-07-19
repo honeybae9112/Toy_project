@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.honeybae.project.mapper.BiddMapper">
+<!--
+CREATE TABLE `bidd` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'idx',
+	`Bidd_id` INT(11) NOT NULL COMMENT '경매idx',
+	`bidder_id` INT(11) NOT NULL COMMENT '입찰자',
+	`bidd_price` SMALLINT(6) NOT NULL COMMENT '입찰가',
+	`bidd_date` DATETIME NOT NULL COMMENT '입찰시간',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK_bidd_Bidd_id_Bidd_id` (`Bidd_id`) USING BTREE,
+	INDEX `FK_bidd_bidder_id_member_id` (`bidder_id`) USING BTREE,
+	CONSTRAINT `FK_bidd_Bidd_id_Bidd_id` FOREIGN KEY (`Bidd_id`) REFERENCES `jhbae`.`Bidd` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	CONSTRAINT `FK_bidd_bidder_id_member_id` FOREIGN KEY (`bidder_id`) REFERENCES `jhbae`.`member` (`id`) ON UPDATE RESTRICT ON DELETE RESTRICT
+)
+COMMENT='입찰내역'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+-->
+	<resultMap type="Bidd" id="BiddMap">
+		<result property="id" column="id"/>
+		<result property="auctionId" column="auction_id"/>
+		<result property="bidderId" column="bidder_id"/>
+		<result property="biddPrice" column="bidd_price"/>
+		<result property="biddDate" column="bidd_date"/>
+	</resultMap>
+
+
+	<insert id="insert" parameterType="Bidd">
+	 	INSERT	INTO bidd
+	 	(
+	 				auction_id
+	 				,bidder_id
+	 				,bidd_Price
+	 				,bidd_date
+	 	)
+	 	VALUES
+	 	(
+	 				#{auctionId}
+	 				,#{bidderId}
+	 				,#{biddPrice}
+	 				,#{biddDate}
+	 	)
+	</insert>
+
+	<update id="update" parameterType="Bidd">
+		UPDATE		bidd
+		SET			bidd_price = #{biddPrice}
+					,bidd_date = #{biddDate}
+		WHERE		auction_id = #{auctionId}
+		AND			bidder_id = #{bidderId}
+	</update>
+
+	<select id="selectByOne" parameterType="Bidd" resultMap="BiddMap">
+		SELECT		id
+					,auction_id
+					,bidder_id
+					,bidd_price
+					,bidd_date
+		FROM		bidd
+		WHERE		auction_id = #{auctionId}
+		AND			bidder_id = #{bidderId}
+	</select>
+
+
+</mapper>
