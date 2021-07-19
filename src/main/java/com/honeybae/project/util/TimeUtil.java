@@ -2,21 +2,27 @@ package com.honeybae.project.util;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class TimeUtil {
 
-    public static String get(Date time) {
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time1 = format1.format(time);
-        return time1;
+	public static String getDate(Date time) {
+		SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return simpleDateformat.format(time);
+	}
+    public static String getDate(Date time,String format) {
+    	SimpleDateFormat simpleDateformat = new SimpleDateFormat(format);
+    	return simpleDateformat.format(time);
     }
-    public static String get(Date time,String format) {
-    	SimpleDateFormat format1 = new SimpleDateFormat(format);
-    	format1.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-    	String time1 = format1.format(time);
-    	return time1;
+
+    public static String getDayCalculation(Date time, String format, int day) {
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(time);
+    	calendar.add(Calendar.DATE, day);
+    	SimpleDateFormat simpleDateformat = new SimpleDateFormat(format);
+    	return simpleDateformat.format(calendar.getTime());
     }
 
 }
