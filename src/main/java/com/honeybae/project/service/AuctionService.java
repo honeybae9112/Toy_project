@@ -1,5 +1,6 @@
 package com.honeybae.project.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.honeybae.project.dto.Auction;
+import com.honeybae.project.dto.AuctionVO;
+import com.honeybae.project.dto.Product;
 import com.honeybae.project.mapper.AuctionMapper;
+import com.honeybae.project.mapper.ProductMapper;
 import com.honeybae.project.util.TimeUtil;
 
 @Service
@@ -19,13 +23,34 @@ public class AuctionService {
 
 	@Autowired
 	AuctionMapper auctionMapper;
+	@Autowired
+	ProductMapper productMapper;
 
-	public List<Auction> selectList()throws Exception{
-		return auctionMapper.selectByList();
+	public List<AuctionVO> selectList()throws Exception{
+		List<AuctionVO> respList = new ArrayList();
+		for(Auction auction:auctionMapper.selectByList()) {
+			Product product = productMapper.selectOne(auction.getProductId());
+			AuctionVO vo = new AuctionVO(	auction.getId()
+											,product
+											, auction.getStartDate()
+											, auction.getEndDate()
+											, auction.getCurrentPrice()
+											, auction.getAuctionState());
+			respList.add(vo);
+		}
+		return respList;
 	}
 
-	public Auction selectOne(int auctionId)throws Exception{
-		return auctionMapper.selectByOne(auctionId);
+	public AuctionVO selectOne(int auctionId)throws Exception{
+		Auction auction = auctionMapper.selectByOne(auctionId);
+		Product product = productMapper.selectOne(auction.getProductId());
+		AuctionVO vo = new AuctionVO(	auction.getId()
+										,product
+										, auction.getStartDate()
+										, auction.getEndDate()
+										, auction.getCurrentPrice()
+										, auction.getAuctionState());
+		return vo;
 	}
 
 	public void insert(Auction dto)throws Exception{

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.honeybae.project.dto.Auction;
+import com.honeybae.project.dto.AuctionVO;
 import com.honeybae.project.service.AuctionService;
 
 @RestController
@@ -25,11 +26,11 @@ public class AuctionController {
 	AuctionService auctionService;
 
 	@GetMapping(value = "/auction")
-	public List<Auction> list(Auction dto)throws Exception{
+	public List<AuctionVO> list(Auction dto)throws Exception{
 		return auctionService.selectList();
 	}
 	@GetMapping(value = "/auction/{auctionId}")
-	public Auction object(@PathVariable(value = "auctionId")int auctionId)throws Exception{
+	public AuctionVO object(@PathVariable(value = "auctionId")int auctionId)throws Exception{
 		return auctionService.selectOne(auctionId);
 	}
 
