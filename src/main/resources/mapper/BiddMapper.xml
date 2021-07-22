@@ -28,7 +28,7 @@ ENGINE=InnoDB
 	</resultMap>
 
 
-	<insert id="insert" parameterType="Bidd">
+	<insert id="addByBidd" parameterType="Bidd">
 	 	INSERT	INTO bidd
 	 	(
 	 				auction_id
@@ -45,7 +45,7 @@ ENGINE=InnoDB
 	 	)
 	</insert>
 
-	<update id="update" parameterType="Bidd">
+	<update id="updateByPrice" parameterType="Bidd">
 		UPDATE		bidd
 		SET			bidd_price = #{biddPrice}
 					,bidd_date = #{biddDate}
@@ -53,7 +53,7 @@ ENGINE=InnoDB
 		AND			bidder_id = #{bidderId}
 	</update>
 
-	<select id="selectByOne" parameterType="Bidd" resultMap="BiddMap">
+	<select id="selectMyOne" parameterType="Map" resultMap="BiddMap">
 		SELECT		id
 					,auction_id
 					,bidder_id
@@ -62,6 +62,16 @@ ENGINE=InnoDB
 		FROM		bidd
 		WHERE		auction_id = #{auctionId}
 		AND			bidder_id = #{bidderId}
+	</select>
+
+	<select id="selectMyList" parameterType="Bidd" resultMap="BiddMap">
+		SELECT		id
+					,auction_id
+					,bidder_id
+					,bidd_price
+					,bidd_date
+		FROM		bidd
+		WHERE		bidder_id = #{bidderId}
 	</select>
 
 
