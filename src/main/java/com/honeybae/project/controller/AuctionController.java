@@ -38,6 +38,10 @@ public class AuctionController {
 	public void insert(@RequestBody	Auction dto)throws Exception{
 		auctionService.insert(dto);
 	}
+	@PutMapping(value = "/auction")
+	public void update(@RequestBody	Auction dto)throws Exception{
+		auctionService.update(dto);
+	}
 
 
 }

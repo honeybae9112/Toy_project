@@ -28,7 +28,7 @@ ENGINE=InnoDB
 		<result property="auctionState" column="auction_state" />
 	</resultMap>
 
-	<select id="selectByList" resultMap="Auction">
+	<select id="selectByAllAuctionList" resultMap="Auction">
 		SELECT		id
 					,product_id
 					,start_date
@@ -39,7 +39,7 @@ ENGINE=InnoDB
 		WHERE		auction_state = 0
 	</select>
 
-	<select id="selectByOne" parameterType="int" resultMap="Auction">
+	<select id="selectByAuction" parameterType="int" resultMap="Auction">
 		SELECT		id
 					,product_id
 					,start_date
@@ -50,7 +50,7 @@ ENGINE=InnoDB
 		WHERE		id = #{id}
 	</select>
 
-	<insert id="insert" parameterType="Auction">
+	<insert id="addAuction" parameterType="Auction">
 	 	INSERT	INTO auction
 	 	(
 	 				product_id
@@ -69,10 +69,23 @@ ENGINE=InnoDB
 	 	)
 	</insert>
 
-	<update id="updateByPrice" parameterType="Auction">
+	<update id="updateForMaxPrice" parameterType="Auction">
 		UPDATE 		auction
 		SET			current_price = #{currentPrice}
 		WHERE		id = #{id}
+	</update>
+
+	<update id="updateForAbortState" parameterType="Auction">
+		UPDATE		auction
+		SET			auction_state = #{auctionState}
+		WHERE 		id = #{id}
+	</update>
+
+
+	<update id="updateForEndState" parameterType="Auction">
+		UPDATE		auction
+		SET			auction_state = #{auctionState}
+		WHERE 		end_date <![CDATA[ <= ]]> #{endDate}
 	</update>
 
 </mapper>

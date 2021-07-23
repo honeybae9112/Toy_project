@@ -12,8 +12,12 @@ import com.honeybae.project.dto.Bidd;
 @Mapper
 public interface AuctionMapper {
 
-	public List<Auction> selectByList()throws Exception;
-	public Auction selectByOne(int auctionId)throws Exception;
-	public void	insert(Auction dto)throws Exception;
-	public void updateByPrice(Auction dto);
+	public List<Auction> selectByAllAuctionList()throws Exception;
+	public Auction selectByAuction(int auctionId)throws Exception;
+
+	public void	addAuction(Auction dto)throws Exception;
+
+	public void updateForMaxPrice(Auction dto);
+	public void updateForAbortState(Auction dto);
+	public void updateForEndState(Auction dto);
 }

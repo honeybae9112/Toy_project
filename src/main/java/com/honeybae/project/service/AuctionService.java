@@ -27,8 +27,9 @@ public class AuctionService {
 	ProductMapper productMapper;
 
 	public List<AuctionVO> selectList()throws Exception{
+		logger.info("selectList");
 		List<AuctionVO> respList = new ArrayList();
-		for(Auction auction:auctionMapper.selectByList()) {
+		for(Auction auction:auctionMapper.selectByAllAuctionList()) {
 			Product product = productMapper.selectOne(auction.getProductId());
 			AuctionVO vo = new AuctionVO(	auction.getId()
 											,product
@@ -38,11 +39,12 @@ public class AuctionService {
 											, auction.getAuctionState());
 			respList.add(vo);
 		}
+		logger.info(respList.toString());
 		return respList;
 	}
 
 	public AuctionVO selectOne(int auctionId)throws Exception{
-		Auction auction = auctionMapper.selectByOne(auctionId);
+		Auction auction = auctionMapper.selectByAuction(auctionId);
 		Product product = productMapper.selectOne(auction.getProductId());
 		AuctionVO vo = new AuctionVO(	auction.getId()
 										,product
@@ -59,10 +61,20 @@ public class AuctionService {
 		dto.setEndDate(TimeUtil.getDayCalculation(currentDate, "yyyy-MM-dd HH:mm:ss", 7));
 		dto.setCurrentPrice(0);
 		dto.setAuctionState(0);
-		auctionMapper.insert(dto);
+		auctionMapper.addAuction(dto);
 	}
 
+	public void update(Auction dto)throws Exception{
+		auctionMapper.updateForAbortState(dto);
+	}
 
+	public void changeForEndState()throws Exception{
+		Auction dto = new Auction();
+		dto.setAuctionState(2);
+		dto.setEndDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+//		logger.info(new Date().toString());
+		auctionMapper.updateForEndState(dto);
+	}
 
 
 }
