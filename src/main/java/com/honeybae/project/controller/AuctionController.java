@@ -5,12 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.honeybae.project.dto.Auction;
@@ -25,22 +25,25 @@ public class AuctionController {
 	@Autowired
 	AuctionService auctionService;
 
-	@GetMapping(value = "/auction")
-	public List<AuctionVO> list(Auction dto)throws Exception{
-		return auctionService.selectList();
-	}
-	@GetMapping(value = "/auction/{auctionId}")
-	public AuctionVO object(@PathVariable(value = "auctionId")int auctionId)throws Exception{
-		return auctionService.selectOne(auctionId);
+	@PostMapping(value = "/auction")
+	public void add(@RequestBody Auction dto)throws Exception{
+		auctionService.add(dto);
 	}
 
-	@PostMapping(value = "/auction")
-	public void insert(@RequestBody	Auction dto)throws Exception{
-		auctionService.insert(dto);
+	@GetMapping(value = "/auction")
+	public List<AuctionVO> list(@RequestParam int auctionState)throws Exception{
+		return auctionService.selectList(auctionState);
 	}
-	@PutMapping(value = "/auction")
-	public void update(@RequestBody	Auction dto)throws Exception{
-		auctionService.update(dto);
+
+	@GetMapping(value = "/auction/{auctionId}")
+	public AuctionVO get(@PathVariable(value = "auctionId")int auctionId)throws Exception{
+		return auctionService.select(auctionId);
+	}
+
+	@PutMapping(value="/auction/{auctionId}")
+	public void update (@PathVariable(value="auctionId")int auctionId,
+							  @RequestBody Auction dto)throws Exception{
+		auctionService.update(auctionId,dto);
 	}
 
 

@@ -5,14 +5,13 @@ public class Auction {
 	private int productId;
 	private String startDate;
 	private String endDate;
-	private int currentPrice;
+	private Integer currentPrice;
 	private int auctionState;
 
 	public Auction() {
 	}
 
-	public Auction(int id, int productId, String startDate, String endDate, int currentPrice, int auctionState) {
-		super();
+	public Auction(int id, int productId, String startDate, String endDate, Integer currentPrice, int auctionState) {
 		this.id = id;
 		this.productId = productId;
 		this.startDate = startDate;
@@ -53,11 +52,11 @@ public class Auction {
 		this.endDate = endDate;
 	}
 
-	public int getCurrentPrice() {
+	public Integer getCurrentPrice() {
 		return currentPrice;
 	}
 
-	public void setCurrentPrice(int currentPrice) {
+	public void setCurrentPrice(Integer currentPrice) {
 		this.currentPrice = currentPrice;
 	}
 
@@ -68,11 +67,4 @@ public class Auction {
 	public void setAuctionState(int auctionState) {
 		this.auctionState = auctionState;
 	}
-
-	@Override
-	public String toString() {
-		return "Auction [id=" + id + ", productId=" + productId + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", currentPrice=" + currentPrice + ", auctionState=" + auctionState + "]";
-	}
-
 }
