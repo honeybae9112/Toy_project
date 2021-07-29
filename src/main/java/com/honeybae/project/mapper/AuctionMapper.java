@@ -14,11 +14,12 @@ import com.honeybae.project.dto.AuctionVO;
 public interface AuctionMapper {
 
 	void add(Auction auctionDto);
-	AuctionVO select(int auctionId);
-	List<AuctionVO> selectList(int auctionState);
-	List<AuctionVO> selectAll();
+	Auction select(int auctionId);
+	List<Auction> selectList(int auctionState);
+	List<Auction> selectAll();
 
 	void update(Auction dto);
+	void updateByPrice(Auction dto);
 	void updateByState(Auction dto);
 	void updateByStartDate(Auction dto);
 	void updateByEndDate(Auction dto);

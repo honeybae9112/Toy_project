@@ -27,16 +27,24 @@ public class AuctionService extends AuctionState{
 		String startDate = dto.getStartDate();
 		String endDate = dto.getEndDate();
 		Integer currentPrice = dto.getCurrentPrice();
+		Integer minPrice = dto.getMinPrice();
+		Integer maxPrice = dto.getMaxPrice();
 		int auctionState = dto.getAuctionState();
 
-		AuctionVO vo = auctionMapper.select(productId);
-		if(vo == null) {
+
+		Auction Auction = auctionMapper.select(productId);
+		if(Auction == null) {
 			if(auctionState == 0) {
 				auctionDto.setAuctionState(WAIT);
 			}else {
 				auctionDto.setAuctionState(START);
 			}
-
+			if(minPrice != null) {
+				auctionDto.setMinPrice(minPrice);
+			}
+			if(maxPrice != null) {
+				auctionDto.setMaxPrice(maxPrice);
+			}
 			if(startDate !=null) {
 				auctionDto.setStartDate(startDate);
 			}
@@ -51,11 +59,11 @@ public class AuctionService extends AuctionState{
 
 	}
 
-	public AuctionVO select(int auctionId) {
+	public Auction select(int auctionId) {
 		return auctionMapper.select(auctionId);
 	}
 
-	public List<AuctionVO> selectList(int auctionState) {
+	public List<Auction> selectList(int auctionState) {
 		switch (auctionState) {
 		case 0:
 			return auctionMapper.selectList(WAIT);
@@ -78,17 +86,17 @@ public class AuctionService extends AuctionState{
 		Integer currenctPrice = dto.getCurrentPrice();
 		int auctionState = dto.getAuctionState();
 
-		AuctionVO vo = auctionMapper.select(auctionId);
+		Auction auction = auctionMapper.select(auctionId);
 
-		if(currenctPrice > vo.getCurrentPrice()) {
+		if(currenctPrice > auction.getCurrentPrice()) {
 			auctionDto.setCurrentPrice(currenctPrice);
 			auctionMapper.update(auctionDto);
 		}
-		if(startDate!=null && vo.getStartDate()==null) {
+		if(startDate!=null && auction.getStartDate()==null) {
 			auctionDto.setStartDate(startDate);
 			auctionMapper.updateByStartDate(auctionDto);
 		}
-		if(endDate!=null && vo.getEndDate()==null) {
+		if(endDate!=null && auction.getEndDate()==null) {
 			auctionDto.setEndDate(endDate);
 			auctionMapper.updateByEndDate(auctionDto);
 		}
