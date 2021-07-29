@@ -1,10 +1,7 @@
 package com.honeybae.project.service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,69 +9,83 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.honeybae.project.dto.Auction;
+import com.honeybae.project.dto.AuctionVO;
 import com.honeybae.project.dto.Bidd;
 import com.honeybae.project.dto.BiddVO;
-import com.honeybae.project.dto.Product;
 import com.honeybae.project.mapper.AuctionMapper;
 import com.honeybae.project.mapper.BiddMapper;
-import com.honeybae.project.mapper.ProductMapper;
+import com.honeybae.project.util.AuctionState;
 import com.honeybae.project.util.TimeUtil;
 @Service
-public class BiddService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	@Autowired
-	BiddMapper biddMapper;
+public class BiddService extends AuctionState {
 	@Autowired
 	AuctionMapper auctionMapper;
 	@Autowired
-	ProductMapper productMapper;
+	BiddMapper	biddMapper;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public void addBidd(Bidd dto)throws Exception{
-
-		Auction auctionData = auctionMapper.selectByOne(dto.getAuctionId());
-		int currentPrice = auctionData.getCurrentPrice();
-
-		if(dto.getBiddPrice() > currentPrice) {
-			Bidd bidd = biddMapper.selectMyOne(dto);
-			dto.setBiddDate(TimeUtil.getDate(new Date()));
-			if(null == bidd) {
-				biddMapper.addByBidd(dto);
+	public void add(int auctionId,Bidd dto) {
+		int biddPrice = dto.getBiddPrice();
+		int bidderId = dto.getBidderId();
+		AuctionVO auctionVo = auctionMapper.select(auctionId);
+		// 경매중 시 입찰
+		if(auctionVo.getAuctionState()==START) {
+			// 나의 입찰내역을 조회 한뒤
+			// 입찰한 기록이 존재하면 입찰가와 날짜를 수정하고
+			// 없으면 추가한다
+			BiddVO biddVo = select(auctionId,bidderId);
+			if(biddVo != null) {
+				int biddId = biddVo.getId();
+				update(biddId,biddPrice);
 			}else {
-				biddMapper.updateByPrice(dto);
+				dto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+				biddMapper.add(dto);
 			}
-			Auction auctionDto = new Auction();
-			auctionDto.setId(dto.getAuctionId());
-			auctionDto.setCurrentPrice(dto.getBiddPrice());
-			auctionMapper.updateByPrice(auctionDto);
+			// 현재가보다 입찰가가 높은 경우 경매에 현재가격을 업데이트한다
+			int currentPrice = auctionVo.getCurrentPrice();
+			//여러명 동시에 동일 가격 입찰시 가격이 같으면 ?
+			if(currentPrice < biddPrice) {
+				Auction auctionDto = new Auction();
+				auctionDto.setId(auctionId);
+				auctionDto.setCurrentPrice(biddPrice);
+				auctionMapper.updateByPrice(auctionDto);
+			}else {
+				// 현재가 보다 작으면?
+			}
+		// 진행중이 아니면?
+		}else {
+
 		}
 	}
-	public  List<BiddVO> selectMyList(int bidderId)throws Exception{
-		List<BiddVO> respList = new ArrayList<>();
-		for(Bidd bidd : biddMapper.selectMyList(bidderId)) {
-			Auction auction = auctionMapper.selectByOne(bidd.getAuctionId());
-			Product product = productMapper.selectOne(auction.getProductId());
-			BiddVO vo = new BiddVO(bidd.getId()
-									, bidd.getBiddPrice()
-									, bidd.getBiddDate()
-									, product
-									, auction);
-			respList.add(vo);
-		}
-		return respList;
-	}
-	public BiddVO selectMyOne(int auctionId, int bidderId)throws Exception {
+	public BiddVO select(int auctionId, int bidderId) {
 		Bidd biddDto = new Bidd();
 		biddDto.setAuctionId(auctionId);
 		biddDto.setBidderId(bidderId);
-		Bidd bidd = biddMapper.selectMyOne(biddDto);
-		Auction auction = auctionMapper.selectByOne(bidd.getAuctionId());
-		Product product = productMapper.selectOne(auction.getProductId());
-		BiddVO vo = new BiddVO(bidd.getId()
-								, bidd.getBiddPrice()
-								, bidd.getBiddDate()
-								, product
-								, auction);
-		return vo;
+		return biddMapper.select(biddDto);
 	}
+	public BiddVO select(int biddId) {
+		return biddMapper.select(biddId);
+	}
+	public List<BiddVO> selectList(int bidderId){
+		return biddMapper.selectList(bidderId);
+	}
+	public List<BiddVO> selectListAuction(int auctionId) {
+		return biddMapper.selectListByAuction(auctionId);
+	}
+	public void update(int biddId,int biddPrice) {
+		Bidd biddDto = new Bidd();
+		biddDto.setId(biddId);
+		biddDto.setBiddPrice(biddPrice);
+		biddDto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		biddMapper.update(biddDto);
+	}
+	public void delete(int biddId) {
+		biddMapper.delete(biddId);
+	}
+	public void deleteAuction(int auctionId) {
+		biddMapper.deleteByAuction(auctionId);
+	}
+
+
+
 }
