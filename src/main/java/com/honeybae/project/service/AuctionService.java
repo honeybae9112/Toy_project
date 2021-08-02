@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.honeybae.project.dto.Auction;
-import com.honeybae.project.dto.AuctionVO;
+import com.honeybae.project.dto.Bidd;
 import com.honeybae.project.mapper.AuctionMapper;
-import com.honeybae.project.mapper.ProductMapper;
+import com.honeybae.project.mapper.BiddMapper;
 import com.honeybae.project.util.AuctionState;
 
 @Service
@@ -20,6 +20,8 @@ public class AuctionService extends AuctionState{
 
 	@Autowired
 	AuctionMapper auctionMapper;
+	@Autowired
+	BiddMapper biddMapper;
 
 	public void add(Auction dto) {
 		Auction auctionDto = new Auction();
@@ -31,9 +33,8 @@ public class AuctionService extends AuctionState{
 		Integer maxPrice = dto.getMaxPrice();
 		int auctionState = dto.getAuctionState();
 
-
-		Auction Auction = auctionMapper.select(productId);
-		if(Auction == null) {
+		Auction auction = auctionMapper.select(productId);
+		if(auction == null) {
 			if(auctionState == 0) {
 				auctionDto.setAuctionState(WAIT);
 			}else {
@@ -55,6 +56,8 @@ public class AuctionService extends AuctionState{
 				auctionDto.setCurrentPrice(currentPrice);
 			}
 			auctionMapper.add(auctionDto);
+		}else {
+			update(auction.getId(),dto);
 		}
 
 	}
@@ -79,40 +82,58 @@ public class AuctionService extends AuctionState{
 	}
 
 	public void update(int auctionId,Auction dto) {
-		Auction auctionDto = new Auction();
-		auctionDto.setId(auctionId);
+
 		String startDate = dto.getStartDate();
 		String endDate =dto.getEndDate();
-		Integer currenctPrice = dto.getCurrentPrice();
+		Integer minPrice = dto.getMinPrice();
+		Integer maxPrice = dto.getMaxPrice();
 		int auctionState = dto.getAuctionState();
 
-		Auction auction = auctionMapper.select(auctionId);
+		List<Bidd> biddList = biddMapper.selectListByAuction(auctionId);
+		// 경매 수정시 입찰자가 존재하면 ??
+		Auction auctionDto = new Auction();
+		auctionDto.setId(auctionId);
+		if(biddList.size()>0) {
+			// 입찰자들에게 알람 후 수정 ?
 
-		if(currenctPrice > auction.getCurrentPrice()) {
-			auctionDto.setCurrentPrice(currenctPrice);
+		}else {
+			if(startDate == null && endDate == null && minPrice == null && maxPrice == null) {
+				if(auctionState != WAIT) {
+					auctionDto = auctionState(auctionDto, auctionState);
+				}
+			}else {
+				if(minPrice != null ) {
+					auctionDto.setMinPrice(minPrice);
+				}
+				if(maxPrice != null ) {
+					auctionDto.setMaxPrice(maxPrice);
+				}
+				if(startDate!=null) {
+					auctionDto.setStartDate(startDate);
+				}
+				if(endDate!=null) {
+					auctionDto.setEndDate(endDate);
+				}
+				if(auctionState != WAIT) {
+					auctionDto = auctionState(auctionDto, auctionState);
+				}
+			}
 			auctionMapper.update(auctionDto);
 		}
-		if(startDate!=null && auction.getStartDate()==null) {
-			auctionDto.setStartDate(startDate);
-			auctionMapper.updateByStartDate(auctionDto);
+	}
+
+	private Auction auctionState(Auction auctionDto,int auctionState) {
+		switch (auctionState) {
+		case 1:
+			auctionDto.setAuctionState(START);
+			break;
+		case 2:
+			auctionDto.setAuctionState(END);
+			break;
+		case 3:
+			auctionDto.setAuctionState(ABORT);
+			break;
 		}
-		if(endDate!=null && auction.getEndDate()==null) {
-			auctionDto.setEndDate(endDate);
-			auctionMapper.updateByEndDate(auctionDto);
-		}
-		if(auctionState != WAIT) {
-			switch (auctionState) {
-			case 1:
-				auctionDto.setAuctionState(START);
-				break;
-			case 2:
-				auctionDto.setAuctionState(END);
-				break;
-			case 3:
-				auctionDto.setAuctionState(ABORT);
-				break;
-			}
-			auctionMapper.updateByState(auctionDto);
-		}
+		return auctionDto;
 	}
 }

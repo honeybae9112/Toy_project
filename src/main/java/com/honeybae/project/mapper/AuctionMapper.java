@@ -18,9 +18,6 @@ public interface AuctionMapper {
 	List<Auction> selectList(int auctionState);
 	List<Auction> selectAll();
 
-	void update(Auction dto);
-	void updateByPrice(Auction dto);
-	void updateByState(Auction dto);
-	void updateByStartDate(Auction dto);
-	void updateByEndDate(Auction dto);
+	void update(Auction auctionDto);
+	void updateByCurrentPrice(Auction auctionDto);
 }

@@ -31,12 +31,12 @@ public class AuctionController {
 	}
 
 	@GetMapping(value = "/auction")
-	public List<AuctionVO> list(@RequestParam int auctionState)throws Exception{
+	public List<Auction> list(@RequestParam int auctionState)throws Exception{
 		return auctionService.selectList(auctionState);
 	}
 
 	@GetMapping(value = "/auction/{auctionId}")
-	public AuctionVO get(@PathVariable(value = "auctionId")int auctionId)throws Exception{
+	public Auction get(@PathVariable(value = "auctionId")int auctionId)throws Exception{
 		return auctionService.select(auctionId);
 	}
 
