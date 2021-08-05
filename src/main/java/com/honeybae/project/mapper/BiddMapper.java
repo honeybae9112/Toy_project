@@ -12,14 +12,16 @@ import com.honeybae.project.dto.BiddVO;
 @Repository
 public interface BiddMapper {
 
-	BiddVO select(int biddId);
-	BiddVO select(Bidd biddDto);
-	List<BiddVO> selectList(int bidderId);
-	List<BiddVO> selectListByAuction(int auctionId);
+	Bidd select(int biddId);
+	Bidd select(Bidd biddDto);
+	List<Bidd> selectList(int bidderId);
+	List<Bidd> selectListByAuction(int auctionId);
 	void add(Bidd dto);
 	void update(Bidd biddDto);
-	void delete(int auctionId);
+	void updateBySucceccful(Bidd biddDto);
+	void delete(int biddId);
 	void deleteByAuction(int auctionId);
+	Bidd selectMaxPrice(int auctionId);
 
 
 

@@ -25,11 +25,12 @@ public class BiddService extends AuctionState {
 	public void add(int auctionId,Bidd dto) {
 		int biddPrice = dto.getBiddPrice();
 		int bidderId = dto.getBidderId();
+		dto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		
 		Auction auction = auctionMapper.select(auctionId);
 		Integer auctionMaxPrice = auction.getMaxPrice();
 		Integer auctionMinPrice = auction.getMinPrice();
 		int currentPrice = auction.getCurrentPrice();
-		dto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
 
 		if(auction.getAuctionState()==START) {
 			Bidd bidd = select(auctionId,bidderId);
@@ -38,32 +39,44 @@ public class BiddService extends AuctionState {
 				if(auctionMinPrice != null && auctionMaxPrice != null) {
 					if(biddPrice>auctionMinPrice && biddPrice<auctionMaxPrice) {
 						update(biddId,biddPrice);
-						updateAuctionPrice(auctionId,currentPrice,biddPrice);
 					}
 				}else {
 					update(biddId,biddPrice);
-					updateAuctionPrice(auctionId,currentPrice,biddPrice);
 				}
 			}else {
 				if(auctionMinPrice != null && auctionMaxPrice != null) {
-					if(biddPrice>auctionMinPrice && biddPrice<auctionMaxPrice) {
+					if(biddPrice>=auctionMinPrice && biddPrice<=auctionMaxPrice) {
 						biddMapper.add(dto);
-						updateAuctionPrice(auctionId,currentPrice,biddPrice);
 					}
 				}else {
 					biddMapper.add(dto);
-					updateAuctionPrice(auctionId,currentPrice,biddPrice);
 				}
+			}
+			if(biddPrice>currentPrice) {
+				updateCurrentPrice(auctionId,biddPrice);
+				updateSuccessful(auctionId, bidderId);
 			}
 		}
 	}
-	private void updateAuctionPrice(int auctionId,int currentPrice,int biddPrice) {
-		if(biddPrice>currentPrice) {
-			Auction auctionDto = new Auction();
-			auctionDto.setId(auctionId);
-			auctionDto.setCurrentPrice(biddPrice);
-			auctionMapper.updateByPrice(auctionDto);
-		}
+	public void update(int biddId,int biddPrice) {
+		Bidd biddDto = new Bidd();
+		biddDto.setId(biddId);
+		biddDto.setBiddPrice(biddPrice);
+		biddDto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		biddMapper.update(biddDto);
+	}
+	private void updateCurrentPrice(int auctionId,int biddPrice) {
+		Auction auctionDto = new Auction();
+		auctionDto.setId(auctionId);
+		auctionDto.setCurrentPrice(biddPrice);
+		auctionMapper.updateByCurrentPrice(auctionDto);
+	}
+	private void updateSuccessful(int auctionId,int bidderId) {
+		Bidd biddDto = new Bidd();
+		biddDto.setAuctionId(auctionId);
+		biddDto.setBidderId(bidderId);
+		biddDto.setSuccessfulFlag(true);
+		biddMapper.updateBySucceccful(biddDto);
 	}
 
 	public Bidd select(int auctionId, int bidderId) {
@@ -81,28 +94,35 @@ public class BiddService extends AuctionState {
 	public List<Bidd> selectListAuction(int auctionId) {
 		return biddMapper.selectListByAuction(auctionId);
 	}
-	public void update(int biddId,int biddPrice) {
-		Bidd biddDto = new Bidd();
-		biddDto.setId(biddId);
-		biddDto.setBiddPrice(biddPrice);
-		biddDto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
-		biddMapper.update(biddDto);
-	}
 	public void delete(int biddId) {
 		Bidd bidd = select(biddId);
 		int bidderPrice = bidd.getBiddPrice();
 		int auctionId = bidd.getAuctionId();
+		boolean biddSuccessful = bidd.isSuccessfulFlag();
 
 		Auction auction = auctionMapper.select(auctionId);
 		int currentPrice = auction.getCurrentPrice();
 
 		biddMapper.delete(biddId);
-		if(bidderPrice == currentPrice) {
-			int biddMaxPrice = biddMapper.selectMaxPrice(auctionId);
-			Auction auctionDto = new Auction();
-			auctionDto.setId(auctionId);
-			auctionDto.setCurrentPrice(biddMaxPrice);
-			auctionMapper.updateByPrice(auctionDto);
+		if(biddSuccessful) {
+			// 최대값 입찰자가 여러명이면??
+			// 입찰시간이 동일하면 ??? 
+			Bidd maxBidd = biddMapper.selectMaxPrice(auctionId);
+			if(maxBidd !=null) {
+					int maxPrice = maxBidd.getBiddPrice();
+					String biddDate = maxBidd.getBiddDate();
+					if(maxPrice>0) {
+						Auction auctionDto = new Auction();
+						auctionDto.setId(auctionId);
+						auctionDto.setCurrentPrice(maxPrice);
+						auctionMapper.updateByCurrentPrice(auctionDto);
+						
+						Bidd biddDto = new Bidd();
+						biddDto.setId(maxBidd.getId());
+						biddDto.setSuccessfulFlag(true);
+						biddMapper.updateBySucceccful(biddDto);
+					}
+			}
 		}
 	}
 	public void deleteAuction(int auctionId) {
