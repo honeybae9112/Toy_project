@@ -20,4 +20,5 @@ public interface AuctionMapper {
 
 	void update(Auction auctionDto);
 	void updateByCurrentPrice(Auction auctionDto);
+	void updateEndState(int auctionId);
 }

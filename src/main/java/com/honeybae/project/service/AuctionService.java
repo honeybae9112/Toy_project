@@ -136,4 +136,8 @@ public class AuctionService extends AuctionState{
 		}
 		return auctionDto;
 	}
+	
+	public void updateEndState(int auctionId) {
+		auctionMapper.updateEndState(auctionId);
+	}
 }
