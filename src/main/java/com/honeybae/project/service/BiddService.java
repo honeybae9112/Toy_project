@@ -21,11 +21,12 @@ public class BiddService extends AuctionState {
 	@Autowired
 	BiddMapper	biddMapper;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	public void add(int auctionId,Bidd dto) {
+	
+	// 동시간 입찰을 처리하려면??
+	public synchronized void add(int auctionId,Bidd dto) {
 		int biddPrice = dto.getBiddPrice();
 		int bidderId = dto.getBidderId();
-		dto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		dto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss:SSS"));
 		
 		Auction auction = auctionMapper.select(auctionId);
 		Integer auctionMaxPrice = auction.getMaxPrice();
@@ -62,7 +63,7 @@ public class BiddService extends AuctionState {
 		Bidd biddDto = new Bidd();
 		biddDto.setId(biddId);
 		biddDto.setBiddPrice(biddPrice);
-		biddDto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		biddDto.setBiddDate(TimeUtil.getDate(new Date(),"yyyy-MM-dd HH:mm:SSS"));
 		biddMapper.update(biddDto);
 	}
 	private void updateCurrentPrice(int auctionId,int biddPrice) {
